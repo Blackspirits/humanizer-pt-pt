@@ -1,149 +1,174 @@
 ---
 name: humanizer-pt-pt
-description: >-
-  Audita, revê e humaniza texto em português europeu (pt-PT, AO90), preservando
-  significado, factos, intenção, nomes próprios, voz do autor e literais.
-  Usa-a para auditoria de padrões de escrita artificial sem reescrita, revisão
-  mínima de texto humano, reescrita profunda, localização pt-BR → pt-PT,
-  tradução literal, texto robótico, corporativo ou promocional, e calibração
-  por amostras autênticas de voz.
+description: |
+  Revê e reescreve texto em português europeu (pt-PT, AO90) para remover
+  padrões típicos de escrita gerada por IA, tradução literal, português do
+  Brasil e formalismo artificial. Preserva factos, intenção, voz, termos
+  técnicos, formatação e nomes próprios. Inclui modos de humanização profunda,
+  revisão mínima de texto humano, auditoria sem reescrita e clonagem de voz a partir de amostras.
 license: MIT
-compatibility: Agent Skills clients; Claude Code 2.1.143+.
+compatibility: Agent Skills clients; Claude Code 2.1.143+ (root single-skill plugin layout).
 metadata:
-  locale: pt-PT
-  version: 1.0.0
-  author: Filipe Mota (BlackSpirits)
-  upstream: https://github.com/blader/humanizer
-  evaluation: corpus manual e assistido por modelos em evals/cases.json
+  version: "1.0.0"
+  locale: "pt-PT"
 ---
 
 # Humanizer pt-PT
 
-Transforma texto artificial, traduzido ou excessivamente formal em português europeu natural. Também pode apenas auditar ou fazer QA mínimo. A prioridade é sempre preservar o conteúdo e a voz, não “enganar detetores”.
+Edita texto em português europeu para que pareça escrito por uma pessoa competente, com uma voz adequada ao contexto. O objetivo é melhorar a escrita, não enganar classificadores de IA.
 
 ## Princípios obrigatórios
 
-1. **Preserva informação, não a forma.** Mantém factos, nomes, datas, números, citações, fontes, relações causais, intenção e grau de certeza.
-2. **Nunca inventes.** Não acrescentes acontecimentos, funcionalidades, métricas, fontes, opiniões, experiências pessoais, testemunhos, emoções ou exemplos que o original não contenha.
-3. **Protege literais.** Não alteres código, comandos, caminhos, URLs, e-mails, chaves, IDs, nomes de ficheiros, nomes próprios, títulos oficiais ou texto citado, salvo pedido explícito.
-4. **Usa pt-PT com AO90.** Decide pelo contexto. Não apliques mapas palavra a palavra.
-5. **Preserva a voz humana existente.** Um texto não precisa de ficar mais neutro, elegante ou formal apenas porque pode.
-6. **Prefere a intervenção mínima suficiente.** A qualidade mede-se pela adequação, não pelo número de alterações.
-7. **Não fabriques humanidade.** Não introduzas erros deliberados, gíria aleatória, experiências falsas, hesitações artificiais ou sinónimos escolhidos ao acaso.
-8. **Não uses classificadores como árbitro.** Não prometas “passar” detetores nem atribuas percentagens de autoria IA.
+1. **Preserva a informação, não a forma.** Mantém todas as afirmações relevantes, mas podes comprimir repetições, juntar ou separar parágrafos e alterar a ordem quando isso melhorar o texto.
+2. **Nunca inventes.** Não acrescentes factos, nomes, datas, números, citações, fontes, experiências pessoais ou detalhes concretos que não estejam no original ou nas instruções do utilizador.
+3. **Mantém a intenção.** Não transformes uma nota informal num comunicado, uma opinião numa resposta neutra ou uma sinopse num texto promocional.
+4. **Preserva elementos literais.** Não alteres código, comandos, caminhos, URLs, chaves, identificadores, nomes de produtos, nomes próprios, títulos oficiais ou texto citado, salvo pedido explícito.
+5. **Usa pt-PT e AO90.** Evita pt-BR, mas não faças substituições cegas. O contexto decide.
+6. **A voz do autor tem prioridade.** Quando existirem amostras autênticas do autor, imita os hábitos observados em vez de impor uma cadência genérica.
+7. **Não introduzas erros deliberados.** Naturalidade não significa escrever mal, inserir gralhas ou forçar gíria.
 
 ## Modos
 
 ### MODO: AUTO
 
-Modo predefinido. Classifica internamente o texto e escolhe:
+Determina o nível de intervenção:
 
-- `HUMANIZAR`, quando predomina escrita artificial, tradução literal, linguagem promocional ou estrutura mecânica;
-- `QA HUMANO`, quando o texto já tem voz própria e apenas contém problemas reais.
+- texto claramente gerado por IA, promocional ou traduzido literalmente: aplica **HUMANIZAR**;
+- texto humano com problemas pontuais: aplica **QA HUMANO**;
+- amostras de voz fornecidas: combina o modo adequado com **CLONAR VOZ**.
 
-Nunca escolhas `AUDITAR` automaticamente. Não anuncies o modo selecionado, salvo pedido.
+Em caso de dúvida, prefere **QA HUMANO**. É mais fácil deixar uma frase um pouco rígida do que apagar a voz de uma pessoa. O modo **AUDITAR** só é ativado quando o utilizador pedir análise, diagnóstico, pontuação ou revisão sem alterações.
 
 ### MODO: AUDITAR
 
-Analisa sem reescrever.
-
-Para cada ocorrência indica:
+Analisa o texto sem o reescrever. Identifica apenas padrões observáveis e apresenta, para cada ocorrência relevante:
 
 - ID e nome do padrão;
-- excerto literal presente no original;
-- gravidade: `ligeira`, `clara` ou `grave`;
-- motivo;
-- direção de correção, sem produzir a versão final.
+- excerto exato do texto;
+- gravidade: **ligeira**, **clara** ou **grave**;
+- motivo e direção de correção.
 
-Termina com:
-
-- número de ocorrências;
-- categorias afetadas;
-- nível geral: `limpo`, `ligeiro`, `moderado` ou `pesado`.
-
-Nunca afirmes que o texto foi escrito por IA, nunca atribuas uma percentagem de origem e não uses características de formatação como prova isolada.
+Termina com a contagem de padrões, categorias afetadas e nível geral: **limpo**, **ligeiro**, **moderado** ou **pesado**. Não atribuas percentagens de IA, não afirmes que o texto foi gerado por IA e não uses classificadores externos como prova.
 
 ### MODO: HUMANIZAR
 
-Reescrita profunda para texto artificial, genérico, promocional, burocrático ou traduzido. Remove estruturas mecânicas, mas preserva integralmente a informação relevante.
+Reescrita profunda. Remove padrões de IA, tradução literal, enchimento e estrutura mecânica. Podes reorganizar livremente, desde que preserves a informação e o objetivo.
 
 ### MODO: QA HUMANO
 
-Revisão contida de texto já humano. Corrige apenas problemas reais de gramática, clareza, coerência, pt-PT ou adequação. Não uniformizes a voz, o ritmo ou as preferências pessoais do autor.
+Revisão contida. Corrige apenas problemas reais: gramática, ambiguidade, repetição involuntária, pt-BR, tradução literal, tom inadequado ou frase pouco natural. Não substituas frases simples apenas para parecerem mais elegantes.
 
 ### MODO: CLONAR VOZ
 
-Requer amostras autênticas do autor. Extrai apenas tendências demonstradas: comprimento de frase, cadência, contrações, formalidade, pontuação, humor, vocabulário e estrutura. Não copies frases das amostras nem inventes opiniões ou experiências para “soar igual”.
+Analisa primeiro as amostras do autor:
+
+- extensão e ritmo das frases;
+- vocabulário e nível de formalidade;
+- pontuação e uso de parênteses ou travessões;
+- forma de iniciar parágrafos;
+- transições frequentes ou ausência delas;
+- repetições deliberadas, humor, secura ou hesitação;
+- tratamento usado: tu, você, construção impessoal ou terceira pessoa.
+
+Replica esses hábitos sem copiar frases completas. A amostra sobrepõe-se às preferências genéricas desta skill, exceto às regras de exatidão, segurança e não invenção.
 
 ## Fluxo de trabalho
 
-1. Determina o objetivo, público, género textual e registo.
-2. Identifica os elementos protegidos e a informação que não pode mudar.
-3. Em `AUTO`, seleciona internamente HUMANIZAR ou QA HUMANO.
-4. Carrega apenas as referências necessárias.
-5. Deteta padrões em combinações e contexto; não proíbas palavras isoladas.
-6. Revê com a intensidade adequada ao modo.
-7. Compara a versão final com o original para confirmar que não há perdas, invenções ou alterações de certeza.
-8. Lê em voz alta mentalmente e elimina apenas o que continua mecânico.
+1. Identifica o formato, o público, o objetivo e o registo.
+2. Escolhe o modo.
+3. Deteta problemas com `references/patterns.md`. Procura combinações; uma palavra isolada raramente prova alguma coisa.
+4. Consulta `references/composition.md` antes de reescrever. Aplica os princípios apenas quando melhorarem clareza, precisão ou ritmo sem acrescentar conteúdo.
+5. Se o modo for **AUDITAR**, produz o relatório e não alteres o texto. Nos restantes modos, reescreve apenas o necessário.
+6. Faz uma auditoria silenciosa:
+   - introduzi algum facto novo?
+   - alterei a posição ou a intenção do autor?
+   - deixei clichés, pt-BR ou tradução literal?
+   - regularizei demasiado a voz?
+   - mexi em texto literal ou nomes próprios?
+7. Entrega a versão final. Só mostra a auditoria quando o utilizador a pedir ou quando o modo ativo for **AUDITAR**.
 
 ## Ficheiros de apoio
 
-- Consulta [`references/patterns.md`](references/patterns.md) para detetar os 36 padrões. Lê o catálogo completo em HUMANIZAR e AUDITAR; em QA HUMANO usa apenas as secções relevantes.
-- Consulta [`references/composition.md`](references/composition.md) antes de construir a versão final em HUMANIZAR ou CLONAR VOZ.
-- Consulta [`references/formats.md`](references/formats.md) quando o texto tiver um formato identificável: e-mail, documentação, UI, localização, sinopse, guião, publicação, commit/PR ou texto formal.
-- Consulta [`references/regional-variation.md`](references/regional-variation.md) quando houver oralidade, regionalismos ou público regional identificado.
-- Consulta [`vocabulary-map.json`](vocabulary-map.json) para pt-BR, UI, tradução literal e terminologia. As opções são contextuais; nunca uses substituição global.
-- Consulta [`profiles/blackspirits.md`](profiles/blackspirits.md) apenas quando o perfil BlackSpirits estiver explicitamente ativo ou for pedido.
+Esta skill inclui ficheiros de referência que deves consultar conforme o contexto, em vez de os carregar sempre:
 
-## Falsos positivos
+- **`references/patterns.md`** — os 36 padrões de deteção com exemplos e correções. Consulta sempre que estiveres a detetar ou corrigir problemas no texto.
+- **`references/composition.md`** — princípios de composição em pt-PT: clareza, concisão, voz ativa contextual, ritmo e estrutura de parágrafos, sempre com proteção contra invenções. Consulta antes de uma reescrita.
+- **`references/formats.md`** — regras específicas por formato (e-mail, documentação técnica, UI, sinopse, texto jurídico, guião e texto falado). Consulta quando souberes o formato.
+- **`references/regional-variation.md`** — consulta quando o texto tiver regionalismos, oralidade, fala transcrita ou público regional identificado. Define como preservar variedades portuguesas legítimas em vez de as uniformizar.
+- **`vocabulary-map.json`** — consulta quando o texto envolver localização, infiltração de pt-BR, terminologia de interface (UI), anglicismos ou linguagem burocrática. Contém mapeamentos pt-BR→pt-PT, termos de UI, marcadores de IA e notas contextuais que evitam substituições cegas. As notas em `context_notes` têm prioridade sobre qualquer mapeamento direto.
+- **`profiles/blackspirits.md`** — consulta apenas quando o autor ou o projeto indicar explicitamente que segue as preferências de BlackSpirits. Define terminologia e tom próprios que se sobrepõem às predefinições genéricas, mas nunca às regras de exatidão e não invenção.
+- **`examples/terminology-overrides.json`** — consulta quando um projeto declarar terminologia própria que deva prevalecer sobre o mapa geral.
 
-Não alteres automaticamente:
+Se os ficheiros especializados não se aplicarem, segue apenas o núcleo desta `SKILL.md` e consulta `references/patterns.md` para a deteção.
 
-- termos técnicos corretos apenas por serem ingleses;
-- voz passiva necessária para foco, desconhecimento do agente ou convenção disciplinar;
-- listas de três que sejam factuais e naturais;
-- travessões usados com função sintática ou editorial legítima;
-- conectores necessários à lógica;
-- repetição útil de um termo técnico;
-- texto jurídico, académico ou institucional que exija formalidade;
-- regionalismos portugueses legítimos;
-- títulos oficiais com capitalização própria;
-- aspas tipográficas exigidas pelo guia editorial.
+# Padrões a detetar e corrigir
 
-## Sinais da voz do autor
+Os 36 padrões — sinais, exemplos antes/depois e correções — estão em **`references/patterns.md`**. Consulta esse ficheiro sempre que estiveres a detetar ou corrigir problemas no texto.
 
-Preserva, quando forem autênticos e adequados:
+Resumo das categorias:
 
-- preferências lexicais recorrentes;
-- frases curtas ou longas características;
-- humor seco, entusiasmo, reserva ou franqueza;
-- primeira pessoa;
-- apartes e pequenas irregularidades deliberadas;
-- tratamento por `tu`, `você`, `o utilizador`, nome próprio ou forma impessoal;
-- pontuação e estrutura reconhecíveis.
+- **Conteúdo** (1-6): importância inflacionada, linguagem promocional, atribuições vagas, análise por gerúndio, secções formulaicas, contextualização genérica.
+- **Vocabulário e sintaxe** (7-21): vocabulário de IA, verbos vagos, paralelismos negativos, regra de três, sinónimos artificiais, intervalos falsos, voz passiva, conectores em excesso, tradução literal, pt-BR, gerúndio progressivo, pronomes, tratamento, artigos/possessivos, nominalizações.
+- **Estilo e formatação** (22-29): travessões, negrito mecânico, listas com cabeçalhos, títulos genéricos, emojis, parágrafos regulares, frases curtas dramáticas, aforismos fabricados.
+- **Comunicação** (30-33): artefactos de chatbot, tom servil, falsas experiências, anúncios do que vem a seguir.
+- **Enchimento e conclusão** (34-36): expressões longas sem função, hesitação/falsa certeza, conclusões genéricas.
 
-Não confundas voz com erro. Corrige o que prejudica entendimento, precisão ou adequação; mantém o resto.
+Procura combinações de sinais, não palavras isoladas.
 
-## Política de saída
+# Falsos positivos
 
-- `AUDITAR`: entrega apenas o relatório estruturado; não reescrevas.
-- Restantes modos: entrega o texto final pronto a usar.
-- Não apresentes automaticamente lista de alterações, nota, pontuação ou explicação.
-- Se o original não contiver informação suficiente para uma reescrita segura, mantém a formulação ou assinala a lacuna; não a preenchas.
-- Se houver ambiguidades com impacto factual, pede esclarecimento antes de alterar.
+Não classifiques automaticamente como escrita de IA:
 
-## Verificação silenciosa
+- gramática correta;
+- texto formal ou académico;
+- uma palavra como “além disso” usada uma vez;
+- um travessão isolado;
+- uma lista bem organizada;
+- uma frase curta para ênfase;
+- aspas tipográficas;
+- vocabulário técnico;
+- repetição necessária para consistência terminológica;
+- texto neutro num contexto jurídico, técnico ou enciclopédico.
 
-Antes de entregar, confirma:
+Procura grupos de sinais. A combinação de introdução genérica, regra de três, importância inflacionada, conectores repetidos e conclusão otimista é mais relevante do que qualquer elemento isolado.
 
-- todos os factos, números, nomes e relações foram preservados;
-- nenhum detalhe novo foi introduzido;
-- código, citações, títulos e identificadores permanecem intactos;
-- o texto está em pt-PT adequado ao contexto;
-- não foram apagados regionalismos ou traços de voz legítimos;
-- o ritmo não foi tornado artificial por regras mecânicas;
-- a saída corresponde ao modo solicitado.
+# Sinais de voz humana a preservar
+
+- detalhes específicos fornecidos pelo autor;
+- dúvidas ou sentimentos contraditórios;
+- humor seco, apartes e autocorreções;
+- repetições com intenção emocional;
+- ritmo irregular mas legível;
+- opiniões que o autor consegue justificar;
+- regionalismos adequados ao autor e ao público;
+- escolhas terminológicas consistentes com o projeto.
+
+# Princípios de composição e regras por formato
+
+Os princípios de clareza, concisão, ritmo e organização estão em **`references/composition.md`**. As regras específicas por formato (e-mail, documentação técnica, UI e microcopy, sinopses, texto jurídico, guião e texto falado) estão em **`references/formats.md`**. Consulta os ficheiros aplicáveis antes de reescrever.
+
+# Política de saída
+
+- Pedido de auditoria: entrega apenas o relatório estruturado; não reescrevas o texto nem atribuas origem humana/IA.
+- Pedido de reescrita: entrega apenas o texto final, salvo pedido de auditoria.
+- Pedido de revisão: podes indicar brevemente problemas reais e depois apresentar a versão final.
+- Ficheiro: altera apenas prosa; preserva frontmatter, código, dados, links e estrutura técnica.
+- Uso integrado por outro agente: devolve apenas a versão final, sem rascunho, perguntas retóricas ou relatório de processo.
+
+# Checklist final
+
+Antes de responder, confirma silenciosamente:
+
+- [ ] Mantive todos os factos e não acrescentei nenhum?
+- [ ] Preservei nomes próprios, números, citações e termos literais?
+- [ ] O texto está em pt-PT e segue AO90 de forma coerente?
+- [ ] Evitei substituições cegas entre pt-BR e pt-PT?
+- [ ] Mantive a voz e o nível de formalidade adequados?
+- [ ] Removi clichés, enchimento e estrutura mecânica?
+- [ ] A pontuação e o ritmo parecem naturais, não fabricados?
+- [ ] O final termina numa ideia útil, sem conclusão automática?
+- [ ] Se auditei, citei excertos reais e evitei afirmar que o texto foi escrito por IA?
 
 ## Atribuição
 
-Adaptação independente para pt-PT inspirada em [`blader/humanizer`](https://github.com/blader/humanizer), de Siqi Chen. Consulta `NOTICE` e `LICENSE`.
+Adaptação para português europeu inspirada em `blader/humanizer`, de Siqi Chen, distribuído sob licença MIT, e no guia “Signs of AI writing” do WikiProject AI Cleanup. Esta versão é uma adaptação linguística e editorial, não uma tradução literal.
