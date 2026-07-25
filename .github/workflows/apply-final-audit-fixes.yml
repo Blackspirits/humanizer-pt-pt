@@ -1,0 +1,188 @@
+name: Apply final audit fixes
+
+on:
+  push:
+    branches:
+      - agent/final-audit-fixes
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/final-audit-fixes
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Apply audited corrections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          root = Path('.')
+
+          p = root / 'SKILL.md'
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              'compatibility: Agent Skills clients; Claude Code 2.1.143+ (root single-skill plugin layout).',
+              'compatibility: Agent Skills clients; Claude Code 2.1.143+.',
+          )
+          s = s.replace(
+              '# Padrões a detetar e corrigir\n\nOs 36 padrões — sinais, exemplos antes/depois e correções — estão em **`references/patterns.md`**. Consulta esse ficheiro sempre que estiveres a detetar ou corrigir problemas no texto.\n',
+              '## Catálogo de padrões\n\nO catálogo completo está em **`references/patterns.md`**. Usa o resumo seguinte para escolher as secções relevantes.\n',
+          )
+          s = s.replace('\n# Falsos positivos\n', '\n## Falsos positivos\n')
+          s = s.replace('\n# Sinais de voz humana a preservar\n', '\n## Sinais de voz humana a preservar\n')
+          s = s.replace(
+              '\n# Princípios de composição e regras por formato\n\nOs princípios de clareza, concisão, ritmo e organização estão em **`references/composition.md`**. As regras específicas por formato (e-mail, documentação técnica, UI e microcopy, sinopses, texto jurídico, guião e texto falado) estão em **`references/formats.md`**. Consulta os ficheiros aplicáveis antes de reescrever.\n',
+              '\n## Aplicação por formato\n\nCombina os princípios de **`references/composition.md`** com as regras do formato aplicável em **`references/formats.md`**.\n',
+          )
+          s = s.replace('\n\n# Política de saída\n', '\n\n## Política de saída\n')
+          s = s.replace('\n# Checklist final\n', '\n## Checklist final\n')
+          p.write_text(s, encoding='utf-8')
+
+          p = root / 'examples/before-after.md'
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              'A aplicação permite aos utilizadores gerir os ficheiros.',
+              'A nossa solução permite aos utilizadores gerir os seus ficheiros.',
+          )
+          s = s.replace(
+              'A equipa vai resolver o problema e adicionar compatibilidade com o novo formato na próxima versão.',
+              'A equipa vai resolver o problema e assegurar que a próxima versão é compatível com o novo formato.',
+          )
+          s = s.replace(
+              '### Antes\n\n## Estratégia De Crescimento E Parcerias Globais\n\n### Depois\n\n## Estratégia de crescimento e parcerias globais',
+              '### Antes\n\n```markdown\n## Estratégia De Crescimento E Parcerias Globais\n```\n\n### Depois\n\n```markdown\n## Estratégia de crescimento e parcerias globais\n```',
+          )
+          p.write_text(s, encoding='utf-8')
+
+          p = root / 'references/patterns.md'
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              '> A empresa continua a ter atrasos frequentes nas entregas.',
+              '> A empresa tem atrasos frequentes nas entregas.',
+          )
+          s = s.replace(
+              '> A atualização altera o fluxo de trabalho.',
+              '> A atualização muda a forma de trabalhar.',
+          )
+          p.write_text(s, encoding='utf-8')
+
+          p = root / 'vocabulary-map.json'
+          data = json.loads(p.read_text(encoding='utf-8'))
+          data['rules']['single_option_requires_context_note_if_polysemous'] = True
+          data['context_notes'].update({
+              'salvar': "Em informática pt-BR, traduzir 'salvar' por 'guardar' quando se trata de ficheiros, documentos, definições ou progresso. Manter 'salvar' nos sentidos legítimos de resgatar, livrar de perigo ou preservar uma vida.",
+              'senha': "Em autenticação digital, usar 'palavra-passe', 'PIN' ou 'código' conforme o mecanismo. Manter 'senha' quando designar uma senha de atendimento, ordem ou bilhete numerado.",
+              'controle': "Como nome pt-BR, escolher 'controlo', 'comando' ou 'controlador' conforme o objeto. Manter 'controle' quando for uma forma conjugada legítima do verbo 'controlar', como em 'é necessário que controle a velocidade'.",
+              'equipe': "Como nome pt-BR para um grupo, usar 'equipa'. Manter 'equipe' quando for uma forma conjugada do verbo 'equipar', como em 'convém que a empresa equipe os veículos'.",
+              'registro': "Como nome pt-BR, usar normalmente 'registo'. Preservar 'registro' em nomes próprios, citações, títulos oficiais ou quando for uma forma verbal ou terminologia estabelecida que o contexto exija.",
+          })
+          p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          p = root / 'scripts/validate-package.py'
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              'for key in ("fato", "nomes_proprios", "arquivo", "você", "boleto", "release", "time", "roteiro", "acessar", "cadastrar", "cadastro", "software_livre"):',
+              'for key in ("fato", "nomes_proprios", "arquivo", "você", "boleto", "release", "time", "roteiro", "acessar", "cadastrar", "cadastro", "software_livre", "salvar", "senha", "controle", "equipe", "registro"):',
+          )
+          s = s.replace(
+              '    if rules.get("multi_option_requires_context_note") is not True:\n        fail("multi_option_requires_context_note deve ser true")\n',
+              '    if rules.get("multi_option_requires_context_note") is not True:\n        fail("multi_option_requires_context_note deve ser true")\n    if rules.get("single_option_requires_context_note_if_polysemous") is not True:\n        fail("single_option_requires_context_note_if_polysemous deve ser true")\n',
+          )
+          marker = '    if ambiguous_without_note:\n        fail("mapeamentos com várias opções sem nota contextual: " + ", ".join(ambiguous_without_note))\n'
+          addition = '''    polysemous_single_option = {"salvar", "senha", "controle", "equipe", "registro"}\n    missing_polysemous_notes = sorted(polysemous_single_option - set(notes))\n    if missing_polysemous_notes:\n        fail("mapeamentos polissémicos de opção única sem nota contextual: " + ", ".join(missing_polysemous_notes))\n'''
+          s = s.replace(marker, marker + addition)
+          s = s.replace(
+              'if not isinstance(cases, list) or len(cases) < 45:\n        fail("evals/cases.json deve conter pelo menos 45 casos")',
+              'if not isinstance(cases, list) or len(cases) < 46:\n        fail("evals/cases.json deve conter pelo menos 46 casos")',
+          )
+          s = s.replace('    audit_count = 0\n', '    audit_count = 0\n    audit_severities: set[str] = set()\n')
+          s = s.replace(
+              '            if severity not in {"limpo", "ligeiro", "moderado", "pesado"}:\n                fail(f"gravidade geral inválida no caso {case_id}")\n',
+              '            if severity not in {"limpo", "ligeiro", "moderado", "pesado"}:\n                fail(f"gravidade geral inválida no caso {case_id}")\n            audit_severities.add(severity)\n',
+          )
+          s = s.replace(
+              '    if audit_count < 3:\n        fail("devem existir pelo menos três avaliações AUDITAR")\n',
+              '    if audit_count < 4:\n        fail("devem existir pelo menos quatro avaliações AUDITAR")\n    expected_audit_severities = {"limpo", "ligeiro", "moderado", "pesado"}\n    if audit_severities != expected_audit_severities:\n        fail("cobertura incompleta dos níveis gerais de AUDITAR: " + ", ".join(sorted(audit_severities)))\n',
+          )
+          p.write_text(s, encoding='utf-8')
+
+          p = root / 'tests/test_package.py'
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(r'            r"\btela do\b",', r'            r"\btela do (?:computador|telemóvel|celular|dispositivo|aplicativo|sistema)\b",')
+          s = s.replace(r'            r"\bsalvar\b",', r'            r"\bsalvar (?:o |um |este |esse )?(?:ficheiro|arquivo|documento|projeto|configurações|definições)\b",')
+          s = s.replace(r'            r"\bsenhas?\b",', r'            r"\bsenha (?:de acesso|do utilizador|do usuário|da conta)\b",')
+          s = s.replace(r'            r"\bequipes?\b",', r'            r"\ba equipe (?:de|do|da|responsável|técnica)\b",')
+          s = s.replace(
+              '        exempt = {\n',
+              '''        valid_ptpt_examples = (\n            "A tela do pintor está exposta.",\n            "O bombeiro conseguiu salvar a vítima.",\n            "É preciso tirar uma senha no balcão.",\n            "Convém que a empresa equipe os veículos.",\n        )\n        for example in valid_ptpt_examples:\n            self.assertFalse(\n                any(re.search(pattern, example.lower()) for pattern in forbidden),\n                f"falso positivo em pt-PT válido: {example}",\n            )\n\n        exempt = {\n''',
+              1,
+          )
+          s = s.replace(
+              '            if not path.is_file() or path.suffix not in {".md", ".json", ".yml", ".cff"}:\n                continue\n',
+              '            # Este teste analisa documentação e dados editoriais; código Python é\n            # validado pelos testes próprios e não entra neste varrimento lexical.\n            if not path.is_file() or path.suffix not in {".md", ".json", ".yml", ".cff"}:\n                continue\n',
+          )
+          s = s.replace(
+              '        self.assertTrue(data["rules"]["multi_option_requires_context_note"])\n',
+              '        self.assertTrue(data["rules"]["multi_option_requires_context_note"])\n        self.assertTrue(data["rules"]["single_option_requires_context_note_if_polysemous"])\n        for key in ("salvar", "senha", "controle", "equipe", "registro"):\n            self.assertIn(key, notes)\n',
+          )
+          s = s.replace(
+              '        self.assertTrue(required.issubset(ids))\n\n    def test_pattern_examples_preserve_information_and_show_false_positives',
+              '''        self.assertTrue(required.issubset(ids))\n\n    def test_audit_overall_severity_has_full_coverage(self) -> None:\n        data = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))\n        severities = {\n            case.get("expected_overall_severity")\n            for case in data["cases"]\n            if case.get("mode") == "AUDITAR"\n        }\n        self.assertTrue({"limpo", "ligeiro", "moderado", "pesado"}.issubset(severities))\n\n    def test_pattern_examples_preserve_information_and_show_false_positives''',
+          )
+          p.write_text(s, encoding='utf-8')
+
+          p = root / 'evals/cases.json'
+          data = json.loads(p.read_text(encoding='utf-8'))
+          if not any(case.get('id') == 'audit-heavy-001' for case in data['cases']):
+              data['cases'].append({
+                  'id': 'audit-heavy-001',
+                  'mode': 'AUDITAR',
+                  'input': 'No panorama atual, é fundamental destacar que esta solução inovadora, robusta e transformadora não é apenas uma ferramenta, mas uma mudança de paradigma. Além disso, desbloqueia o potencial das equipas de forma eficaz e eficiente. E é aqui que tudo muda. Em última análise, esta jornada está apenas a começar.',
+                  'expected_pattern_ids': [6, 7, 9, 10, 14, 28, 36],
+                  'expected_overall_severity': 'pesado',
+                  'must_not_claim_ai_origin': True,
+                  'manual_checks': [
+                      'Classifica como pesado pela acumulação de padrões, não por uma palavra isolada.',
+                      'Usa apenas excertos presentes no texto e não o reescreve.',
+                  ],
+              })
+          p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          p = root / 'CHANGELOG.md'
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('Corpus com 45 avaliações', 'Corpus com 46 avaliações')
+          s = s.replace('Quinze testes unitários', 'Dezasseis testes unitários')
+          s = s.replace(
+              '- Todos os mapeamentos com várias alternativas exigem uma nota contextual; o validador impede opções sem critério de desempate.\n',
+              '- Todos os mapeamentos com várias alternativas exigem uma nota contextual; o validador impede opções sem critério de desempate.\n- Mapeamentos polissémicos de opção única, como `salvar`, `senha`, `controle`, `equipe` e `registro`, também exigem notas contextuais.\n',
+          )
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Validate corrected repository
+        run: |
+          python scripts/validate-package.py
+          python -m unittest discover -s tests -v
+
+      - name: Commit corrected state
+        shell: bash
+        run: |
+          rm .github/workflows/apply-final-audit-fixes.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Apply final audit fixes"
+          git push origin HEAD:agent/final-audit-fixes
