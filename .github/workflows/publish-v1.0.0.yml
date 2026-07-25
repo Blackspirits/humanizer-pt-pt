@@ -1,4 +1,4 @@
-name: Publish v1.0.0
+name: Clean up release branch
 
 on:
   pull_request:
@@ -9,82 +9,12 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  cleanup:
     if: github.head_ref == 'agent/publish-v1.0.0'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out validated release commit
-        uses: actions/checkout@v4
-        with:
-          ref: 979250d8ccac7a7caf648d19af38a1d32625239e
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Validate and test
-        run: |
-          python scripts/validate-package.py
-          python -m unittest discover -s tests -v
-
-      - name: Build and verify deterministic packages
-        run: |
-          python scripts/package-release.py
-          ls -l dist
-          cd dist
-          sha256sum -c SHA256SUMS
-
-      - name: Prepare release notes
-        run: |
-          cat > release-notes.md <<'EOF'
-          # Humanizer pt-PT v1.0.0
-
-          Primeira versão pública estável da skill `humanizer-pt-pt`, criada para rever, auditar e reescrever texto em português europeu (pt-PT, AO90), preservando significado, factos, voz, nomes próprios e terminologia contextual.
-
-          ## Destaques
-
-          - cinco modos: `AUTO`, `AUDITAR`, `HUMANIZAR`, `QA HUMANO` e `CLONAR VOZ`;
-          - catálogo de 36 padrões de escrita artificial, tradução literal e formalismo desnecessário;
-          - mapa terminológico contextual pt-BR → pt-PT, sem substituições cegas;
-          - proteção de nomes próprios, código, URLs, identificadores, citações e títulos oficiais;
-          - orientação para variação regional, formatos específicos e composição natural em pt-PT;
-          - 46 avaliações editoriais e 16 testes unitários;
-          - empacotamento determinístico em ZIP e TAR.GZ, com checksums SHA-256;
-          - compatibilidade com clientes Agent Skills e Claude Code 2.1.143+.
-
-          ## Instalação
-
-          ```bash
-          npx skills add Blackspirits/humanizer-pt-pt --global
-          ```
-
-          Consulta o `README.md` para instalação no Claude Code, utilização dos modos e execução das avaliações.
-          EOF
-
-      - name: Create and verify GitHub Release
+      - name: Delete temporary branch
         env:
           GH_TOKEN: ${{ github.token }}
-          TARGET_SHA: 979250d8ccac7a7caf648d19af38a1d32625239e
         run: |
-          if gh release view v1.0.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "A Release v1.0.0 já existe." >&2
-            exit 1
-          fi
-
-          gh release create v1.0.0 \
-            dist/humanizer-pt-pt-v1.0.0.zip \
-            dist/humanizer-pt-pt-v1.0.0.tar.gz \
-            dist/SHA256SUMS \
-            --repo "$GITHUB_REPOSITORY" \
-            --target "$TARGET_SHA" \
-            --title "Humanizer pt-PT v1.0.0" \
-            --notes-file release-notes.md \
-            --latest
-
-          gh release view v1.0.0 --repo "$GITHUB_REPOSITORY" \
-            --json tagName,targetCommitish,name,isDraft,isPrerelease,url,assets
-
-          actual_assets="$(gh release view v1.0.0 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | sort)"
-          expected_assets="$(printf '%s\n' SHA256SUMS humanizer-pt-pt-v1.0.0.tar.gz humanizer-pt-pt-v1.0.0.zip | sort)"
-          test "$actual_assets" = "$expected_assets"
+          gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/agent/publish-v1.0.0"
