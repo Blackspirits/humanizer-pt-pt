@@ -33,6 +33,8 @@ class PackageTests(unittest.TestCase):
         exempt = {"vocabulary-map.json", "evals/cases.json", "examples/before-after.md", "examples/terminology-overrides.json", "references/patterns.md", "examples/audit-report.md", "CHANGELOG.md"}
         offenders: list[str] = []
         for path in sorted(ROOT.rglob("*")):
+            # Este teste analisa documentação e dados editoriais; código Python é
+            # validado pelos testes próprios e não entra neste varrimento lexical.
             if not path.is_file() or path.suffix not in {".md", ".json", ".yml", ".cff"}:
                 continue
             rel = path.relative_to(ROOT).as_posix()
@@ -65,6 +67,9 @@ class PackageTests(unittest.TestCase):
         for token in ("equipa", "código", "tempo"):
             self.assertIn(token, notes["time"].lower())
         self.assertTrue(data["rules"]["multi_option_requires_context_note"])
+        self.assertTrue(data["rules"]["single_option_requires_context_note_if_polysemous"])
+        for key in ("salvar", "senha", "controle", "equipe", "registro"):
+            self.assertIn(key, notes)
         missing = [key for key, values in mapping.items() if isinstance(values, list) and len(values) > 1 and key not in notes]
         self.assertEqual(missing, [])
 
@@ -73,6 +78,15 @@ class PackageTests(unittest.TestCase):
         ids = {case["id"] for case in data["cases"]}
         required = {"ptbr-acessar-regencia-001", "ptbr-acessar-regencia-contracao-001", "ptbr-cadastrar-ui-001", "ptbr-cadastrar-entidade-001", "ptbr-cadastrar-inscricao-001", "technical-software-concepts-001", "ptbr-time-equipa-001", "technical-time-identifier-001"}
         self.assertTrue(required.issubset(ids))
+
+    def test_audit_overall_severity_has_full_coverage(self) -> None:
+        data = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
+        severities = {
+            case.get("expected_overall_severity")
+            for case in data["cases"]
+            if case.get("mode") == "AUDITAR"
+        }
+        self.assertTrue({"limpo", "ligeiro", "moderado", "pesado"}.issubset(severities))
 
     def test_pattern_examples_preserve_information_and_show_false_positives(self) -> None:
         text = (ROOT / "references" / "patterns.md").read_text(encoding="utf-8")

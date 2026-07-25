@@ -12,54 +12,176 @@
     "preserve_quotes": true,
     "preserve_code_and_identifiers": true,
     "preserve_official_titles": true,
-    "multi_option_requires_context_note": true
+    "multi_option_requires_context_note": true,
+    "single_option_requires_context_note_if_polysemous": true
   },
   "pt_br_to_pt_pt": {
-    "acessar": ["aceder"],
-    "aplicativo": ["aplicação"],
-    "arquivo": ["ficheiro", "arquivo"],
-    "baixar": ["transferir", "descarregar"],
-    "banco de dados": ["base de dados"],
-    "boleto": ["boleto", "documento de cobrança"],
-    "cadastrar": ["registar", "inscrever", "criar conta"],
-    "cadastro": ["registo", "inscrição", "criação de conta"],
-    "café da manhã": ["pequeno-almoço"],
-    "celular": ["telemóvel"],
-    "compartilhar": ["partilhar"],
-    "compartilhamento": ["partilha"],
-    "contato": ["contacto"],
-    "controle": ["controlo"],
-    "curtir": ["gostar", "assinalar com Gosto", "aproveitar"],
-    "deletar": ["eliminar", "apagar"],
-    "equipe": ["equipa"],
-    "escanear": ["digitalizar"],
-    "estorno": ["reembolso", "reversão", "anulação", "devolução"],
-    "excluir": ["eliminar", "apagar", "remover"],
-    "fones de ouvido": ["auscultadores", "auriculares"],
-    "gerenciar": ["gerir"],
-    "gerenciamento": ["gestão"],
-    "guia": ["separador", "guia"],
-    "lixeira": ["Reciclagem", "lixo"],
-    "mídia": ["meios de comunicação", "meios de comunicação social", "multimédia", "media"],
-    "mídias sociais": ["redes sociais"],
-    "mouse": ["rato"],
-    "notebook": ["portátil", "computador portátil"],
-    "ônibus": ["autocarro"],
-    "pedágio": ["portagem"],
-    "ponto de ônibus": ["paragem de autocarro"],
-    "registrar": ["registar", "inscrever"],
-    "registro": ["registo"],
-    "rodar": ["executar", "correr"],
-    "salvar": ["guardar"],
-    "senha": ["palavra-passe"],
-    "suporte": ["apoio", "assistência", "suporte"],
-    "tela": ["ecrã"],
-    "termos de uso": ["termos de utilização"],
-    "time": ["equipa"],
-    "trem": ["comboio"],
-    "usuário": ["utilizador"],
-    "você": ["construção impessoal", "tu", "o utilizador", "a pessoa"],
-    "roteiro": ["guião", "plano", "itinerário"]
+    "acessar": [
+      "aceder"
+    ],
+    "aplicativo": [
+      "aplicação"
+    ],
+    "arquivo": [
+      "ficheiro",
+      "arquivo"
+    ],
+    "baixar": [
+      "transferir",
+      "descarregar"
+    ],
+    "banco de dados": [
+      "base de dados"
+    ],
+    "boleto": [
+      "boleto",
+      "documento de cobrança"
+    ],
+    "cadastrar": [
+      "registar",
+      "inscrever",
+      "criar conta"
+    ],
+    "cadastro": [
+      "registo",
+      "inscrição",
+      "criação de conta"
+    ],
+    "café da manhã": [
+      "pequeno-almoço"
+    ],
+    "celular": [
+      "telemóvel"
+    ],
+    "compartilhar": [
+      "partilhar"
+    ],
+    "compartilhamento": [
+      "partilha"
+    ],
+    "contato": [
+      "contacto"
+    ],
+    "controle": [
+      "controlo"
+    ],
+    "curtir": [
+      "gostar",
+      "assinalar com Gosto",
+      "aproveitar"
+    ],
+    "deletar": [
+      "eliminar",
+      "apagar"
+    ],
+    "equipe": [
+      "equipa"
+    ],
+    "escanear": [
+      "digitalizar"
+    ],
+    "estorno": [
+      "reembolso",
+      "reversão",
+      "anulação",
+      "devolução"
+    ],
+    "excluir": [
+      "eliminar",
+      "apagar",
+      "remover"
+    ],
+    "fones de ouvido": [
+      "auscultadores",
+      "auriculares"
+    ],
+    "gerenciar": [
+      "gerir"
+    ],
+    "gerenciamento": [
+      "gestão"
+    ],
+    "guia": [
+      "separador",
+      "guia"
+    ],
+    "lixeira": [
+      "Reciclagem",
+      "lixo"
+    ],
+    "mídia": [
+      "meios de comunicação",
+      "meios de comunicação social",
+      "multimédia",
+      "media"
+    ],
+    "mídias sociais": [
+      "redes sociais"
+    ],
+    "mouse": [
+      "rato"
+    ],
+    "notebook": [
+      "portátil",
+      "computador portátil"
+    ],
+    "ônibus": [
+      "autocarro"
+    ],
+    "pedágio": [
+      "portagem"
+    ],
+    "ponto de ônibus": [
+      "paragem de autocarro"
+    ],
+    "registrar": [
+      "registar",
+      "inscrever"
+    ],
+    "registro": [
+      "registo"
+    ],
+    "rodar": [
+      "executar",
+      "correr"
+    ],
+    "salvar": [
+      "guardar"
+    ],
+    "senha": [
+      "palavra-passe"
+    ],
+    "suporte": [
+      "apoio",
+      "assistência",
+      "suporte"
+    ],
+    "tela": [
+      "ecrã"
+    ],
+    "termos de uso": [
+      "termos de utilização"
+    ],
+    "time": [
+      "equipa"
+    ],
+    "trem": [
+      "comboio"
+    ],
+    "usuário": [
+      "utilizador"
+    ],
+    "você": [
+      "construção impessoal",
+      "tu",
+      "o utilizador",
+      "a pessoa"
+    ],
+    "roteiro": [
+      "guião",
+      "plano",
+      "itinerário"
+    ]
   },
   "context_notes": {
     "acessar": "Ao substituir o brasileirismo 'acessar', ajustar a regência: 'acessar o sistema' torna-se 'aceder ao sistema'; 'acessar a conta', 'aceder à conta'; 'acessar os ficheiros', 'aceder aos ficheiros'. Nunca produzir 'aceder o/a/os/as'.",
@@ -88,29 +210,151 @@
     "suporte": "É válido em informática e estruturas físicas. Não substituir automaticamente por 'apoio'.",
     "tela": "Usar 'ecrã' em informática. Manter 'tela' para tecido, pintura, cinema ou outros sentidos legítimos.",
     "time": "Traduzir por 'equipa' apenas quando 'time' for o brasileirismo para um grupo desportivo ou de trabalho. Preservar o inglês apenas em código, identificadores, nomes próprios ou termos técnicos estabelecidos; em prosa inglesa comum, traduzir pelo equivalente contextual, como 'tempo'.",
-    "você": "Não é incorreto em pt-PT, mas a repetição pode soar distante ou brasileira. Preservar quando o projeto ou a relação o exigir."
+    "você": "Não é incorreto em pt-PT, mas a repetição pode soar distante ou brasileira. Preservar quando o projeto ou a relação o exigir.",
+    "salvar": "Em informática pt-BR, traduzir 'salvar' por 'guardar' quando se trata de ficheiros, documentos, definições ou progresso. Manter 'salvar' nos sentidos legítimos de resgatar, livrar de perigo ou preservar uma vida.",
+    "senha": "Em autenticação digital, usar 'palavra-passe', 'PIN' ou 'código' conforme o mecanismo. Manter 'senha' quando designar uma senha de atendimento, ordem ou bilhete numerado.",
+    "controle": "Como nome pt-BR, escolher 'controlo', 'comando' ou 'controlador' conforme o objeto. Manter 'controle' quando for uma forma conjugada legítima do verbo 'controlar', como em 'é necessário que controle a velocidade'.",
+    "equipe": "Como nome pt-BR para um grupo, usar 'equipa'. Manter 'equipe' quando for uma forma conjugada do verbo 'equipar', como em 'convém que a empresa equipe os veículos'.",
+    "registro": "Como nome pt-BR, usar normalmente 'registo'. Preservar 'registro' em nomes próprios, citações, títulos oficiais ou quando for uma forma verbal ou terminologia estabelecida que o contexto exija."
   },
   "ui_terms": {
-    "about": "Acerca", "account": "conta", "app": "aplicação", "backup": "cópia de segurança", "browser": "navegador", "checkbox": "caixa de seleção", "database": "base de dados", "default_noun": "predefinição", "default_adjective": "predefinido", "download_action": "Transferir", "download_noun": "transferência", "file": "ficheiro", "folder": "pasta", "home_page": "página inicial", "language": "Idioma", "link": "link", "log_in": "iniciar sessão", "log_out": "terminar sessão", "password": "palavra-passe", "save": "Guardar", "screen": "ecrã", "settings": "definições", "sign_up": "criar conta", "tab": "separador", "upload_action": "Carregar", "user": "utilizador"
+    "about": "Acerca",
+    "account": "conta",
+    "app": "aplicação",
+    "backup": "cópia de segurança",
+    "browser": "navegador",
+    "checkbox": "caixa de seleção",
+    "database": "base de dados",
+    "default_noun": "predefinição",
+    "default_adjective": "predefinido",
+    "download_action": "Transferir",
+    "download_noun": "transferência",
+    "file": "ficheiro",
+    "folder": "pasta",
+    "home_page": "página inicial",
+    "language": "Idioma",
+    "link": "link",
+    "log_in": "iniciar sessão",
+    "log_out": "terminar sessão",
+    "password": "palavra-passe",
+    "save": "Guardar",
+    "screen": "ecrã",
+    "settings": "definições",
+    "sign_up": "criar conta",
+    "tab": "separador",
+    "upload_action": "Carregar",
+    "user": "utilizador"
   },
   "translationese": {
-    "aplicar para uma vaga": ["candidatar-se a uma vaga"],
-    "baseado em": ["com base em", "baseado em"],
-    "endereçar um problema": ["resolver um problema", "tratar um problema", "abordar um problema"],
-    "eventualmente": ["talvez", "por fim", "mais tarde", "eventualmente"],
-    "experienciar um erro": ["encontrar um erro", "ter um erro", "ocorrer um erro"],
-    "fazer sentido para": ["ser adequado a", "compensar para", "fazer sentido para"],
-    "realizar que": ["perceber que"],
-    "suportar um formato": ["ser compatível com um formato", "aceitar um formato"],
-    "tomar uma decisão informada": ["decidir com base na informação disponível"]
+    "aplicar para uma vaga": [
+      "candidatar-se a uma vaga"
+    ],
+    "baseado em": [
+      "com base em",
+      "baseado em"
+    ],
+    "endereçar um problema": [
+      "resolver um problema",
+      "tratar um problema",
+      "abordar um problema"
+    ],
+    "eventualmente": [
+      "talvez",
+      "por fim",
+      "mais tarde",
+      "eventualmente"
+    ],
+    "experienciar um erro": [
+      "encontrar um erro",
+      "ter um erro",
+      "ocorrer um erro"
+    ],
+    "fazer sentido para": [
+      "ser adequado a",
+      "compensar para",
+      "fazer sentido para"
+    ],
+    "realizar que": [
+      "perceber que"
+    ],
+    "suportar um formato": [
+      "ser compatível com um formato",
+      "aceitar um formato"
+    ],
+    "tomar uma decisão informada": [
+      "decidir com base na informação disponível"
+    ]
   },
   "ai_markers": {
-    "high": ["no panorama atual", "no cenário atual", "num mundo cada vez mais", "é fundamental destacar", "mergulhar profundamente", "desbloquear o potencial", "mudança de paradigma", "marca indelével", "jornada transformadora", "testemunho do compromisso", "é aqui que tudo muda", "e isso muda tudo", "mas eis o que ninguém conta"],
-    "medium": ["é importante destacar", "importa salientar", "além disso", "em última análise", "vamos explorar", "experiência fluida", "solução robusta", "impulsionar a produtividade", "de forma eficaz e eficiente", "não é apenas", "não só", "porque é que isto importa", "amplamente reconhecido", "destaque na comunicação social"],
-    "watch_verbs": ["alavancar", "potenciar", "impulsionar", "maximizar", "otimizar", "proporcionar", "garantir", "assegurar", "evidenciar", "demonstrar"]
+    "high": [
+      "no panorama atual",
+      "no cenário atual",
+      "num mundo cada vez mais",
+      "é fundamental destacar",
+      "mergulhar profundamente",
+      "desbloquear o potencial",
+      "mudança de paradigma",
+      "marca indelével",
+      "jornada transformadora",
+      "testemunho do compromisso",
+      "é aqui que tudo muda",
+      "e isso muda tudo",
+      "mas eis o que ninguém conta"
+    ],
+    "medium": [
+      "é importante destacar",
+      "importa salientar",
+      "além disso",
+      "em última análise",
+      "vamos explorar",
+      "experiência fluida",
+      "solução robusta",
+      "impulsionar a produtividade",
+      "de forma eficaz e eficiente",
+      "não é apenas",
+      "não só",
+      "porque é que isto importa",
+      "amplamente reconhecido",
+      "destaque na comunicação social"
+    ],
+    "watch_verbs": [
+      "alavancar",
+      "potenciar",
+      "impulsionar",
+      "maximizar",
+      "otimizar",
+      "proporcionar",
+      "garantir",
+      "assegurar",
+      "evidenciar",
+      "demonstrar"
+    ]
   },
   "corporate_to_direct": {
-    "com vista a": "para", "dar início ao processo": "começar", "efetuar a configuração": "configurar", "efetuar o envio": "enviar", "no sentido de": "para", "possui a capacidade de": "consegue", "proceder à análise": "analisar", "proceder à implementação": "implementar", "realizar a validação": "validar", "tem como objetivo principal": "serve para"
+    "com vista a": "para",
+    "dar início ao processo": "começar",
+    "efetuar a configuração": "configurar",
+    "efetuar o envio": "enviar",
+    "no sentido de": "para",
+    "possui a capacidade de": "consegue",
+    "proceder à análise": "analisar",
+    "proceder à implementação": "implementar",
+    "realizar a validação": "validar",
+    "tem como objetivo principal": "serve para"
   },
-  "preserve_if_project_uses": ["API", "branch", "cache", "commit", "deploy", "endpoint", "framework", "issue", "merge request", "pull request", "release", "repository", "runtime"]
+  "preserve_if_project_uses": [
+    "API",
+    "branch",
+    "cache",
+    "commit",
+    "deploy",
+    "endpoint",
+    "framework",
+    "issue",
+    "merge request",
+    "pull request",
+    "release",
+    "repository",
+    "runtime"
+  ]
 }

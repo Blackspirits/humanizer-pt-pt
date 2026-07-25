@@ -21,14 +21,15 @@ Primeira versão pública.
 - Regência protegida em adaptações como `acessar o sistema` → `aceder ao sistema`, com contrações corretas.
 - Critérios explícitos para `cadastrar`/`cadastro` e para a distinção conceptual entre `open source` e `free software`.
 - Todos os mapeamentos com várias alternativas exigem uma nota contextual; o validador impede opções sem critério de desempate.
+- Mapeamentos polissémicos de opção única, como `salvar`, `senha`, `controle`, `equipe` e `registro`, também exigem notas contextuais.
 - Exemplos revistos para não inventarem nem perderem métricas, fontes, funcionalidades, experiências ou consequências.
 - AUDITAR descreve padrões observáveis sem atribuir autoria ou percentagens de IA.
 
 ### Avaliação e ferramentas
 
-- Corpus com 45 avaliações, incluindo AUTO, auditoria, falsos positivos, nomes próprios, citações, UI, oralidade, *Title Case*, notoriedade mediática, ganchos dramáticos e desambiguação de `roteiro` (guião vs itinerário).
+- Corpus com 46 avaliações, incluindo AUTO, auditoria, falsos positivos, nomes próprios, citações, UI, oralidade, *Title Case*, notoriedade mediática, ganchos dramáticos e desambiguação de `roteiro` (guião vs itinerário).
 - Runner de evals com relatórios JSON, seleção por caso, validação de excertos e controlo de afirmações de origem IA. A comparação preserva diacríticos para não confundir formas como `a` e `à`; riscos de invenção são apresentados explicitamente para revisão manual.
-- Quinze testes unitários para o runner, validador, empacotamento e ausência de brasileirismos na documentação.
+- Dezasseis testes unitários para o runner, validador, empacotamento e ausência de brasileirismos na documentação.
 - `roteiro` corrigido para `guião` em toda a documentação e no validador; mapeamento contextual `roteiro` → guião/plano/itinerário no mapa terminológico.
 - Validador sem dependências para estrutura, versões, referências, manifests, vocabulário, documentação e CI.
 - Empacotamento determinístico em ZIP e TAR.GZ, verificação de paridade e checksums SHA-256.
