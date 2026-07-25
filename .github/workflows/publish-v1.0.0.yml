@@ -17,7 +17,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: 979250d8ccac7a7caf648d19af38a1d32625239e
-          path: source
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,13 +24,11 @@ jobs:
           python-version: '3.12'
 
       - name: Validate and test
-        working-directory: source
         run: |
           python scripts/validate-package.py
           python -m unittest discover -s tests -v
 
       - name: Build and verify deterministic packages
-        working-directory: source
         run: |
           python scripts/package-release.py
           ls -l dist
@@ -76,9 +73,9 @@ jobs:
           fi
 
           gh release create v1.0.0 \
-            source/dist/humanizer-pt-pt-v1.0.0.zip \
-            source/dist/humanizer-pt-pt-v1.0.0.tar.gz \
-            source/dist/SHA256SUMS \
+            dist/humanizer-pt-pt-v1.0.0.zip \
+            dist/humanizer-pt-pt-v1.0.0.tar.gz \
+            dist/SHA256SUMS \
             --repo "$GITHUB_REPOSITORY" \
             --target "$TARGET_SHA" \
             --title "Humanizer pt-PT v1.0.0" \
