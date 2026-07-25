@@ -15,7 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class PackageTests(unittest.TestCase):
     def test_validator_passes(self) -> None:
-        subprocess.run([sys.executable, str(ROOT / "scripts" / "validate-package.py")], cwd=ROOT, check=True, capture_output=True, text=True)
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "validate-package.py")],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
 
     def test_skill_is_compact_and_has_all_modes(self) -> None:
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -29,10 +35,54 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(ids, list(range(1, 37)))
 
     def test_docs_are_free_of_ptbr_terms(self) -> None:
-        forbidden = (r"\broteiro\b", r"\busuári[oa]s?\b", r"\barquivos? de vídeo\b", r"\btela do\b", r"\bcelulares?\b", r"\bsalvar\b", r"\bsenhas?\b", r"\baplicativos?\b", r"\bgerenciar\b", r"\bequipes?\b", r"\bônibus\b", r"\bbaixar (?:um |o |os |um)?arquivos?\b", r"\bdeletar\b")
-        exempt = {"vocabulary-map.json", "evals/cases.json", "examples/before-after.md", "examples/terminology-overrides.json", "references/patterns.md", "examples/audit-report.md", "CHANGELOG.md"}
+        """A documentação da skill não deve conter brasileirismos.
+
+        Excluem-se os ficheiros onde os termos pt-BR são o próprio objeto de
+        estudo: o mapa terminológico, o corpus de avaliação e os exemplos
+        antes/depois.
+        """
+        forbidden = (
+            r"\broteiro\b",
+            r"\busuári[oa]s?\b",
+            r"\barquivos? de vídeo\b",
+            r"\btela do (?:computador|telemóvel|celular|dispositivo|aplicativo|sistema)\b",
+            r"\bcelulares?\b",
+            r"\bsalvar (?:o |um |este |esse )?(?:ficheiro|arquivo|documento|projeto|configurações|definições)\b",
+            r"\bsenha (?:de acesso|do utilizador|do usuário|da conta)\b",
+            r"\baplicativos?\b",
+            r"\bgerenciar\b",
+            r"\ba equipe (?:de|do|da|responsável|técnica)\b",
+            r"\bônibus\b",
+            r"\bbaixar (?:um |o |os |um)?arquivos?\b",
+            r"\bdeletar\b",
+        )
+        valid_ptpt_examples = (
+            "A tela do pintor está exposta.",
+            "O bombeiro conseguiu salvar a vítima.",
+            "É preciso tirar uma senha no balcão.",
+            "Convém que a empresa equipe os veículos.",
+        )
+        for example in valid_ptpt_examples:
+            self.assertFalse(
+                any(re.search(pattern, example.lower()) for pattern in forbidden),
+                f"falso positivo em pt-PT válido: {example}",
+            )
+
+        exempt = {
+            "vocabulary-map.json",
+            "evals/cases.json",
+            "examples/before-after.md",
+            "examples/terminology-overrides.json",
+            "references/patterns.md",
+            "examples/audit-report.md",
+            # O CHANGELOG documenta decisões terminológicas e precisa de nomear
+            # os termos que foram corrigidos.
+            "CHANGELOG.md",
+        }
         offenders: list[str] = []
         for path in sorted(ROOT.rglob("*")):
+            # Este teste analisa documentação e dados editoriais; código Python é
+            # validado pelos testes próprios e não entra neste varrimento lexical.
             if not path.is_file() or path.suffix not in {".md", ".json", ".yml", ".cff"}:
                 continue
             rel = path.relative_to(ROOT).as_posix()
@@ -65,14 +115,38 @@ class PackageTests(unittest.TestCase):
         for token in ("equipa", "código", "tempo"):
             self.assertIn(token, notes["time"].lower())
         self.assertTrue(data["rules"]["multi_option_requires_context_note"])
-        missing = [key for key, values in mapping.items() if isinstance(values, list) and len(values) > 1 and key not in notes]
+        self.assertTrue(data["rules"]["single_option_requires_context_note_if_polysemous"])
+        for key in ("salvar", "senha", "controle", "equipe", "registro"):
+            self.assertIn(key, notes)
+        missing = [
+            key for key, values in mapping.items()
+            if isinstance(values, list) and len(values) > 1 and key not in notes
+        ]
         self.assertEqual(missing, [])
 
     def test_regency_and_software_evals_exist(self) -> None:
         data = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
         ids = {case["id"] for case in data["cases"]}
-        required = {"ptbr-acessar-regencia-001", "ptbr-acessar-regencia-contracao-001", "ptbr-cadastrar-ui-001", "ptbr-cadastrar-entidade-001", "ptbr-cadastrar-inscricao-001", "technical-software-concepts-001", "ptbr-time-equipa-001", "technical-time-identifier-001"}
+        required = {
+            "ptbr-acessar-regencia-001",
+            "ptbr-acessar-regencia-contracao-001",
+            "ptbr-cadastrar-ui-001",
+            "ptbr-cadastrar-entidade-001",
+            "ptbr-cadastrar-inscricao-001",
+            "technical-software-concepts-001",
+            "ptbr-time-equipa-001",
+            "technical-time-identifier-001",
+        }
         self.assertTrue(required.issubset(ids))
+
+    def test_audit_overall_severity_has_full_coverage(self) -> None:
+        data = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
+        severities = {
+            case.get("expected_overall_severity")
+            for case in data["cases"]
+            if case.get("mode") == "AUDITAR"
+        }
+        self.assertTrue({"limpo", "ligeiro", "moderado", "pesado"}.issubset(severities))
 
     def test_pattern_examples_preserve_information_and_show_false_positives(self) -> None:
         text = (ROOT / "references" / "patterns.md").read_text(encoding="utf-8")
@@ -82,14 +156,24 @@ class PackageTests(unittest.TestCase):
 
     def test_release_archives_have_identical_content(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "package-release.py"), "--output", tmp], cwd=ROOT, check=True, capture_output=True, text=True)
+            subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "package-release.py"), "--output", tmp],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
             zip_path = next(Path(tmp).glob("*.zip"))
             tar_path = next(Path(tmp).glob("*.tar.gz"))
             self.assertTrue((Path(tmp) / "SHA256SUMS").is_file())
             with zipfile.ZipFile(zip_path) as zf:
                 zip_data = {name: zf.read(name) for name in zf.namelist() if not name.endswith("/")}
             with tarfile.open(tar_path, "r:gz") as tf:
-                tar_data = {member.name: tf.extractfile(member).read() for member in tf.getmembers() if member.isfile()}
+                tar_data = {
+                    member.name: tf.extractfile(member).read()
+                    for member in tf.getmembers()
+                    if member.isfile()
+                }
             self.assertEqual(zip_data, tar_data)
 
 

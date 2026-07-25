@@ -202,7 +202,7 @@ def validate_vocabulary() -> None:
     if any("multibanco" in str(value).casefold() for value in values):
         fail("boleto não deve mapear para referência Multibanco")
     notes = data.get("context_notes", {})
-    for key in ("fato", "nomes_proprios", "arquivo", "você", "boleto", "release", "time", "roteiro", "acessar", "cadastrar", "cadastro", "software_livre"):
+    for key in ("fato", "nomes_proprios", "arquivo", "você", "boleto", "release", "time", "roteiro", "acessar", "cadastrar", "cadastro", "software_livre", "salvar", "senha", "controle", "equipe", "registro"):
         if key not in notes:
             fail(f"falta nota contextual obrigatória para {key!r}")
     if "fato" in mapping:
@@ -234,12 +234,18 @@ def validate_vocabulary() -> None:
     rules = data.get("rules", {})
     if rules.get("multi_option_requires_context_note") is not True:
         fail("multi_option_requires_context_note deve ser true")
+    if rules.get("single_option_requires_context_note_if_polysemous") is not True:
+        fail("single_option_requires_context_note_if_polysemous deve ser true")
     ambiguous_without_note = sorted(
         key for key, value in mapping.items()
         if isinstance(value, list) and len(value) > 1 and key not in notes
     )
     if ambiguous_without_note:
         fail("mapeamentos com várias opções sem nota contextual: " + ", ".join(ambiguous_without_note))
+    polysemous_single_option = {"salvar", "senha", "controle", "equipe", "registro"}
+    missing_polysemous_notes = sorted(polysemous_single_option - set(notes))
+    if missing_polysemous_notes:
+        fail("mapeamentos polissémicos de opção única sem nota contextual: " + ", ".join(missing_polysemous_notes))
     for flag in ("never_blind_replace", "preserve_proper_names", "preserve_quotes", "preserve_code_and_identifiers"):
         if rules.get(flag) is not True:
             fail(f"{flag} deve ser true")
@@ -254,11 +260,12 @@ def _list_of_strings(case: dict[str, Any], field: str, case_id: str) -> None:
 def validate_evals() -> None:
     data = load_json("evals/cases.json")
     cases = data.get("cases")
-    if not isinstance(cases, list) or len(cases) < 45:
-        fail("evals/cases.json deve conter pelo menos 45 casos")
+    if not isinstance(cases, list) or len(cases) < 46:
+        fail("evals/cases.json deve conter pelo menos 46 casos")
     ids: list[str] = []
     modes: set[str] = set()
     audit_count = 0
+    audit_severities: set[str] = set()
 
     for index, case in enumerate(cases, 1):
         if not isinstance(case, dict):
@@ -293,6 +300,7 @@ def validate_evals() -> None:
             severity = case.get("expected_overall_severity")
             if severity not in {"limpo", "ligeiro", "moderado", "pesado"}:
                 fail(f"gravidade geral inválida no caso {case_id}")
+            audit_severities.add(severity)
             if case.get("must_not_claim_ai_origin") is not True:
                 fail(f"caso AUDITAR {case_id} deve proibir afirmações de origem IA")
         ids.append(case_id)
@@ -321,8 +329,11 @@ def validate_evals() -> None:
         fail("existem IDs de avaliação duplicados")
     if modes != VALID_MODES:
         fail(f"cobertura de modos incompleta: {sorted(modes)}")
-    if audit_count < 3:
-        fail("devem existir pelo menos três avaliações AUDITAR")
+    if audit_count < 4:
+        fail("devem existir pelo menos quatro avaliações AUDITAR")
+    expected_audit_severities = {"limpo", "ligeiro", "moderado", "pesado"}
+    if audit_severities != expected_audit_severities:
+        fail("cobertura incompleta dos níveis gerais de AUDITAR: " + ", ".join(sorted(audit_severities)))
 
 
 def validate_license_and_attribution() -> None:
@@ -381,6 +392,7 @@ def validate_documentation_and_ci() -> None:
             fail(f"CI não contém: {required}")
     if "|| echo" in workflow or "continue-on-error: true" in workflow:
         fail("a CI não deve ocultar falhas de validação")
+
 
 
 def validate_markdown_integrity() -> None:

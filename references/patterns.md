@@ -69,7 +69,7 @@ Mantém a consequência apenas quando estiver sustentada pelo texto.
 > Apesar dos atrasos frequentes nas entregas, a empresa continua bem posicionada para prosperar num futuro cada vez mais digital.
 
 **Depois:**
-> A empresa continua a ter atrasos frequentes nas entregas.
+> A empresa tem atrasos frequentes nas entregas.
 
 Remove a projeção otimista quando não estiver sustentada, mas preserva todos os factos concretos presentes no original.
 
@@ -114,7 +114,7 @@ Não são palavras proibidas. Mantém-nas quando forem a escolha mais exata. Cor
 > Não é apenas uma atualização. É uma nova forma de trabalhar.
 
 **Depois:**
-> A atualização altera o fluxo de trabalho.
+> A atualização muda a forma de trabalhar.
 
 ### 10. Regra de três forçada
 

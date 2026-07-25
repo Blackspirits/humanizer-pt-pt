@@ -7,7 +7,7 @@ description: |
   técnicos, formatação e nomes próprios. Inclui modos de humanização profunda,
   revisão mínima de texto humano, auditoria sem reescrita e clonagem de voz a partir de amostras.
 license: MIT
-compatibility: Agent Skills clients; Claude Code 2.1.143+ (root single-skill plugin layout).
+compatibility: Agent Skills clients; Claude Code 2.1.143+.
 metadata:
   version: "1.0.0"
   locale: "pt-PT"
@@ -101,9 +101,9 @@ Esta skill inclui ficheiros de referência que deves consultar conforme o contex
 
 Se os ficheiros especializados não se aplicarem, segue apenas o núcleo desta `SKILL.md` e consulta `references/patterns.md` para a deteção.
 
-# Padrões a detetar e corrigir
+## Catálogo de padrões
 
-Os 36 padrões — sinais, exemplos antes/depois e correções — estão em **`references/patterns.md`**. Consulta esse ficheiro sempre que estiveres a detetar ou corrigir problemas no texto.
+O catálogo completo está em **`references/patterns.md`**. Usa o resumo seguinte para escolher as secções relevantes.
 
 Resumo das categorias:
 
@@ -115,7 +115,7 @@ Resumo das categorias:
 
 Procura combinações de sinais, não palavras isoladas.
 
-# Falsos positivos
+## Falsos positivos
 
 Não classifiques automaticamente como escrita de IA:
 
@@ -132,7 +132,7 @@ Não classifiques automaticamente como escrita de IA:
 
 Procura grupos de sinais. A combinação de introdução genérica, regra de três, importância inflacionada, conectores repetidos e conclusão otimista é mais relevante do que qualquer elemento isolado.
 
-# Sinais de voz humana a preservar
+## Sinais de voz humana a preservar
 
 - detalhes específicos fornecidos pelo autor;
 - dúvidas ou sentimentos contraditórios;
@@ -143,11 +143,11 @@ Procura grupos de sinais. A combinação de introdução genérica, regra de tr�
 - regionalismos adequados ao autor e ao público;
 - escolhas terminológicas consistentes com o projeto.
 
-# Princípios de composição e regras por formato
+## Aplicação por formato
 
-Os princípios de clareza, concisão, ritmo e organização estão em **`references/composition.md`**. As regras específicas por formato (e-mail, documentação técnica, UI e microcopy, sinopses, texto jurídico, guião e texto falado) estão em **`references/formats.md`**. Consulta os ficheiros aplicáveis antes de reescrever.
+Combina os princípios de **`references/composition.md`** com as regras do formato aplicável em **`references/formats.md`**.
 
-# Política de saída
+## Política de saída
 
 - Pedido de auditoria: entrega apenas o relatório estruturado; não reescrevas o texto nem atribuas origem humana/IA.
 - Pedido de reescrita: entrega apenas o texto final, salvo pedido de auditoria.
@@ -155,7 +155,7 @@ Os princípios de clareza, concisão, ritmo e organização estão em **`referen
 - Ficheiro: altera apenas prosa; preserva frontmatter, código, dados, links e estrutura técnica.
 - Uso integrado por outro agente: devolve apenas a versão final, sem rascunho, perguntas retóricas ou relatório de processo.
 
-# Checklist final
+## Checklist final
 
 Antes de responder, confirma silenciosamente:
 

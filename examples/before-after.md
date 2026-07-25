@@ -8,7 +8,7 @@ No cenário atual, é fundamental destacar que a nossa solução inovadora permi
 
 ### Depois
 
-A aplicação permite aos utilizadores gerir os ficheiros.
+A nossa solução permite aos utilizadores gerir os seus ficheiros.
 
 ## Mensagem operacional
 
@@ -52,7 +52,7 @@ A equipa irá endereçar o problema e suportar o novo formato na próxima releas
 
 ### Depois
 
-A equipa vai resolver o problema e adicionar compatibilidade com o novo formato na próxima versão.
+A equipa vai resolver o problema e assegurar que a próxima versão é compatível com o novo formato.
 
 “Release” pode ser preservado quando for a norma do projeto.
 
@@ -72,11 +72,15 @@ A revisão preserva o facto fornecido, mas não transforma cobertura mediática 
 
 ### Antes
 
+```markdown
 ## Estratégia De Crescimento E Parcerias Globais
+```
 
 ### Depois
 
+```markdown
 ## Estratégia de crescimento e parcerias globais
+```
 
 Títulos oficiais e guias editoriais próprios continuam a ter prioridade.
 
