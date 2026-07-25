@@ -1,0 +1,21 @@
+{
+  "project": "exemplo",
+  "locale": "pt-PT",
+  "preferred": {
+    "default": "predefinição",
+    "download": "Transferir",
+    "upload": "Carregar",
+    "save": "Guardar",
+    "tab": "separador",
+    "user": "Utilizador"
+  },
+  "preserve": [
+    "commit",
+    "endpoint",
+    "pull request"
+  ],
+  "notes": [
+    "As preferências do projeto sobrepõem-se ao mapa geral.",
+    "Os termos devem ser confirmados no contexto da interface."
+  ]
+}

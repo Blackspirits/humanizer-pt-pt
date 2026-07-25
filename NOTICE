@@ -1,0 +1,17 @@
+Humanizer pt-PT
+Copyright (c) 2026 Filipe Mota (BlackSpirits)
+
+This project is a European Portuguese adaptation inspired by blader/humanizer:
+https://github.com/blader/humanizer
+
+Original project copyright (c) 2025 Siqi Chen, licensed under the MIT License.
+The original copyright notice and license are preserved in LICENSE.
+
+The Portuguese rules, examples, modes, terminology guidance and regression
+corpus were adapted and extended for pt-PT. This is not an official upstream
+localisation and is not a literal translation.
+
+Comparative review also consulted the WikiProject AI Cleanup guidance and public
+humanizer projects in English, pt-BR and pt-PT. Their approaches were used as
+research references; the pt-PT rules and examples in this repository were
+independently reviewed for context, false positives and factual preservation.
