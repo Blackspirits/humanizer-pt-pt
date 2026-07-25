@@ -394,6 +394,7 @@ def validate_documentation_and_ci() -> None:
         fail("a CI não deve ocultar falhas de validação")
 
 
+
 def validate_markdown_integrity() -> None:
     markdown_files = [path for path in ROOT.rglob("*.md") if ".git" not in path.parts]
     link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
