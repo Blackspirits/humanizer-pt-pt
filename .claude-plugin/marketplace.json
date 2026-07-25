@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "humanizer-pt-pt",
+  "owner": {
+    "name": "BlackSpirits"
+  },
+  "description": "Skill de auditoria, humanização e revisão para português europeu.",
+  "plugins": [
+    {
+      "name": "humanizer-pt-pt",
+      "source": "./",
+      "description": "Audita, revê e humaniza texto em português europeu, preservando factos, intenção e voz do autor.",
+      "license": "MIT",
+      "keywords": [
+        "writing",
+        "editing",
+        "pt-PT",
+        "portuguese",
+        "humanize",
+        "localization",
+        "audit",
+        "evaluation"
+      ],
+      "displayName": "Humanizer pt-PT",
+      "author": {
+        "name": "BlackSpirits",
+        "url": "https://github.com/Blackspirits"
+      },
+      "homepage": "https://github.com/Blackspirits/humanizer-pt-pt",
+      "repository": "https://github.com/Blackspirits/humanizer-pt-pt"
+    }
+  ],
+  "version": "1.0.0"
+}

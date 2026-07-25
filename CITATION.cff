@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: Humanizer pt-PT
+message: "Se este projeto for útil no seu trabalho, cite-o através destes metadados."
+type: software
+authors:
+  - family-names: Mota
+    given-names: Filipe
+version: 1.0.0
+date-released: 2026-07-25
+url: "https://github.com/Blackspirits/humanizer-pt-pt"
+repository-code: "https://github.com/Blackspirits/humanizer-pt-pt"
+license: MIT

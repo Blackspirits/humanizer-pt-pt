@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "humanizer-pt-pt",
+  "description": "Audita, revê e humaniza texto em português europeu, preservando factos, intenção e voz do autor.",
+  "version": "1.0.0",
+  "author": {
+    "name": "BlackSpirits",
+    "url": "https://github.com/Blackspirits"
+  },
+  "homepage": "https://github.com/Blackspirits/humanizer-pt-pt",
+  "repository": "https://github.com/Blackspirits/humanizer-pt-pt",
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "editing",
+    "pt-PT",
+    "portuguese",
+    "humanize",
+    "localization",
+    "prose",
+    "style",
+    "audit",
+    "evaluation"
+  ],
+  "displayName": "Humanizer pt-PT"
+}
