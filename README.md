@@ -4,6 +4,25 @@ Skill portátil para rever, auditar e reescrever texto em português europeu (`p
 
 É inspirada em [`blader/humanizer`](https://github.com/blader/humanizer), mas constitui uma adaptação editorial própria para pt-PT, não uma tradução literal.
 
+
+## Relação com PT-PT Language Intelligence
+
+`humanizer-pt-pt` é uma **skill consumidora**. Não é a fonte de verdade BlackSpirits para conhecimento linguístico genérico de português europeu.
+
+Essa autoridade pertence a [`Blackspirits/ptpt-language-intelligence`](https://github.com/Blackspirits/ptpt-language-intelligence).
+
+O Humanizer continua responsável por:
+
+- modos de humanização e revisão;
+- política de intervenção e preservação da voz;
+- composição da resposta;
+- regras específicas da skill;
+- evals e comportamento do produto.
+
+Conhecimento linguístico genérico — por exemplo contraste pt-PT/pt-BR, naturalidade, sintaxe, colocação pronominal, preferências lexicais e translationese — deve migrar progressivamente para snapshots versionados do PT-PT Language Intelligence. Até existir um snapshot aplicável, os ficheiros locais continuam a definir o comportamento da release atual.
+
+Consumir esse conhecimento não transfere ownership para o Humanizer.
+
 ## O que resolve
 
 - introduções genéricas e conclusões previsíveis;
