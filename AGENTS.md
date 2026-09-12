@@ -9,6 +9,23 @@
 - `vocabulary-map.json`: apoio terminológico contextual.
 - `evals/cases.json`: corpus editorial de regressão.
 
+
+## Autoridade linguística externa
+
+Este repositório é um **consumidor/aplicação editorial**, não a autoridade BlackSpirits para conhecimento linguístico genérico pt-PT.
+
+A autoridade canónica é:
+
+`Blackspirits/ptpt-language-intelligence`
+
+Regra:
+
+`Language Intelligence owns generic language truth; humanizer owns humanization behavior.`
+
+Enquanto não existir um snapshot versionado aplicável do PT-PT Language Intelligence, as regras e mapas deste repositório continuam a definir o comportamento da versão publicada da skill. No entanto, novas claims linguísticas genéricas devem ser validadas e, quando apropriado, promovidas no Language Intelligence em vez de criarem uma segunda fonte de verdade aqui.
+
+Preferências específicas do Humanizer, modos, política de saída, proteção da voz, critérios de intervenção e UX da skill permanecem neste repositório.
+
 ## Regras de manutenção
 
 - Preservar pt-PT e AO90.
