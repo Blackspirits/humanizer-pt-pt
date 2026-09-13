@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0 - 2026-09-13
+
+### Segurança de intervenção
+
+- Adicionada política normativa de precedência e orçamento de intervenção em `references/intervention.md`.
+- O fluxo da skill passa a identificar âncoras semânticas antes da reescrita e a rever negação, modalidade, quantidades, datas, causalidade e relações temporais.
+- Adicionados guards determinísticos para números, percentagens, datas, moedas, versões, URLs, e-mails, paths, código inline e citações.
+- O runner de evals suporta `preserve_semantic_anchors`, exceções explícitas e `max_change_ratio`.
+- Adicionados casos negativos de over-editing e regressões de preservação semântica.
+- Mantida a fronteira: estes guards testam o comportamento do Humanizer; verdade linguística genérica continua no PT-PT Language Intelligence.
+
 ## 1.0.1 - 2026-09-13
 
 ### Arquitetura e tooling

@@ -41,9 +41,11 @@ REQUIRED_FILES = [
     "examples/terminology-overrides.json",
     "humanizer_support/__init__.py",
     "humanizer_support/catalog.py",
+    "humanizer_support/semantic.py",
     "profiles/blackspirits.md",
     "references/composition.md",
     "references/formats.md",
+    "references/intervention.md",
     "references/patterns.md",
     "references/regional-variation.md",
     "scripts/package-release.py",
@@ -51,6 +53,7 @@ REQUIRED_FILES = [
     "tests/test_engineering_foundation.py",
     "tests/test_package.py",
     "tests/test_score_results.py",
+    "tests/test_semantic_safety.py",
     "vocabulary-map.json",
 ]
 
@@ -136,6 +139,7 @@ def validate_skill() -> str:
         "references/patterns.md",
         "references/composition.md",
         "references/formats.md",
+        "references/intervention.md",
         "references/regional-variation.md",
     ):
         if ref not in text:
@@ -168,6 +172,16 @@ def validate_references() -> list[int]:
     ):
         if phrase not in composition:
             fail(f"references/composition.md não contém: {phrase}")
+
+    intervention = read("references/intervention.md")
+    for phrase in (
+        "A melhor alteração é a menor alteração",
+        "Exatidão semântica e não invenção",
+        "max_change_ratio",
+        "Language Intelligence",
+    ):
+        if phrase not in intervention:
+            fail(f"references/intervention.md não contém: {phrase}")
 
     formats = read("references/formats.md")
     for heading in (
@@ -290,8 +304,28 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
             fail(f"caso {case_id} sem input válido")
         if mode not in VALID_MODES:
             fail(f"modo inválido no caso {case_id}: {mode!r}")
-        for field in ("must_avoid", "must_preserve", "must_preserve_exact", "manual_checks"):
+        for field in (
+            "must_avoid",
+            "must_preserve",
+            "must_preserve_exact",
+            "manual_checks",
+            "semantic_anchor_exceptions",
+        ):
             _list_of_strings(case, field, case_id)
+        preserve_anchors = case.get("preserve_semantic_anchors")
+        if preserve_anchors is not None and not isinstance(preserve_anchors, bool):
+            fail(f"preserve_semantic_anchors inválido no caso {case_id}")
+        max_change_ratio = case.get("max_change_ratio")
+        if max_change_ratio is not None and (
+            isinstance(max_change_ratio, bool)
+            or not isinstance(max_change_ratio, (int, float))
+            or not 0 <= float(max_change_ratio) <= 1
+        ):
+            fail(f"max_change_ratio inválido no caso {case_id}")
+        if mode == "AUDITAR" and (
+            preserve_anchors is not None or max_change_ratio is not None
+        ):
+            fail(f"guards de reescrita não se aplicam a AUDITAR ({case_id})")
         groups = case.get("must_include_one_of", [])
         if not isinstance(groups, list) or not all(
             isinstance(group, list) and group and all(isinstance(item, str) for item in group)
@@ -335,6 +369,11 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
         "technical-software-concepts-001",
         "ptbr-time-equipa-001",
         "technical-time-identifier-001",
+        "semantic-negation-modality-001",
+        "semantic-numbers-url-001",
+        "semantic-quote-email-001",
+        "overediting-clean-001",
+        "auto-minimal-intervention-001",
     }
     missing_context_cases = required_context_cases.difference(ids)
     if missing_context_cases:
@@ -343,6 +382,12 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
         fail("existem IDs de avaliação duplicados")
     if modes != VALID_MODES:
         fail(f"cobertura de modos incompleta: {sorted(modes)}")
+    safety_cases = [case for case in cases if case.get("preserve_semantic_anchors")]
+    overediting_cases = [case for case in cases if "max_change_ratio" in case]
+    if len(safety_cases) < 3:
+        fail("devem existir pelo menos três avaliações com preservação de âncoras semânticas")
+    if len(overediting_cases) < 3:
+        fail("devem existir pelo menos três avaliações de over-editing")
     if audit_count < 4:
         fail("devem existir pelo menos quatro avaliações AUDITAR")
     expected_audit_severities = {"limpo", "ligeiro", "moderado", "pesado"}

@@ -4,7 +4,7 @@ Estes contratos tornam explícitas as estruturas usadas pelo Humanizer sem trans
 
 - `rewrite-response.schema.json` — saída de modos de reescrita/revisão.
 - `audit-response.schema.json` — saída estruturada de AUDITAR.
-- `eval-corpus.schema.json` — corpus de regressão.
+- `eval-corpus.schema.json` — corpus de regressão, incluindo guards de âncoras semânticas e orçamento de alteração.
 
 Os contratos descrevem **interfaces do Humanizer**, não conhecimento linguístico genérico. Regras de português europeu continuam a pertencer ao PT-PT Language Intelligence quando forem promovidas para essa autoridade.
 

@@ -9,6 +9,8 @@
 - `vocabulary-map.json`: apoio terminológico contextual.
 - `evals/cases.json`: corpus editorial de regressão.
 - `contracts/`: contratos de outputs/evals.
+- `references/intervention.md`: precedência, orçamento de intervenção e segurança semântica.
+- `humanizer_support/semantic.py`: guards determinísticos de eval; não é um motor linguístico.
 - `docs/ARCHITECTURE.md`: fronteira entre runtime, comportamento, conhecimento e tooling.
 
 

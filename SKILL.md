@@ -9,7 +9,7 @@ description: |
 license: MIT
 compatibility: Agent Skills clients; Claude Code 2.1.143+.
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
   locale: "pt-PT"
 ---
 
@@ -26,6 +26,8 @@ Edita texto em português europeu para que pareça escrito por uma pessoa compet
 5. **Usa pt-PT e AO90.** Evita pt-BR, mas não faças substituições cegas. O contexto decide.
 6. **A voz do autor tem prioridade.** Quando existirem amostras autênticas do autor, imita os hábitos observados em vez de impor uma cadência genérica.
 7. **Não introduzas erros deliberados.** Naturalidade não significa escrever mal, inserir gralhas ou forçar gíria.
+8. **Intervém apenas com motivo.** Texto já natural não deve ser reescrito só para ficar diferente. Usa a menor intervenção que resolva um problema real.
+9. **Protege a semântica fina.** Preserva negação, modalidade, quantidades, datas, relações temporais, causalidade e grau de certeza, salvo pedido explícito para alterar conteúdo.
 
 ## Modos
 
@@ -75,22 +77,26 @@ Replica esses hábitos sem copiar frases completas. A amostra sobrepõe-se às p
 ## Fluxo de trabalho
 
 1. Identifica o formato, o público, o objetivo e o registo.
-2. Escolhe o modo.
-3. Deteta problemas com `references/patterns.md`. Procura combinações; uma palavra isolada raramente prova alguma coisa.
-4. Consulta `references/composition.md` antes de reescrever. Aplica os princípios apenas quando melhorarem clareza, precisão ou ritmo sem acrescentar conteúdo.
-5. Se o modo for **AUDITAR**, produz o relatório e não alteres o texto. Nos restantes modos, reescreve apenas o necessário.
-6. Faz uma auditoria silenciosa:
+2. Escolhe o modo e consulta `references/intervention.md` para aplicar a precedência e o orçamento de intervenção.
+3. Identifica âncoras semânticas e elementos protegidos antes de editar: números, datas, percentagens, URLs, e-mails, código, citações, negação, modalidade e relações temporais relevantes.
+4. Deteta problemas com `references/patterns.md`. Procura combinações; uma palavra isolada raramente prova alguma coisa.
+5. Consulta `references/composition.md` antes de reescrever. Aplica os princípios apenas quando melhorarem clareza, precisão ou ritmo sem acrescentar conteúdo.
+6. Se o modo for **AUDITAR**, produz o relatório e não alteres o texto. Nos restantes modos, reescreve apenas o necessário.
+7. Faz uma auditoria silenciosa:
    - introduzi algum facto novo?
    - alterei a posição ou a intenção do autor?
    - deixei clichés, pt-BR ou tradução literal?
    - regularizei demasiado a voz?
    - mexi em texto literal ou nomes próprios?
-7. Entrega a versão final. Só mostra a auditoria quando o utilizador a pedir ou quando o modo ativo for **AUDITAR**.
+   - alterei negação, possibilidade, obrigação, quantidade, data, ordem temporal ou causalidade?
+   - reescrevi alguma frase que já estava natural sem benefício claro?
+8. Entrega a versão final. Só mostra a auditoria quando o utilizador a pedir ou quando o modo ativo for **AUDITAR**.
 
 ## Ficheiros de apoio
 
 Esta skill inclui ficheiros de referência que deves consultar conforme o contexto, em vez de os carregar sempre:
 
+- **`references/intervention.md`** — política de precedência, orçamento de intervenção, proteção semântica e over-editing. Consulta antes de escolher quanto alterar.
 - **`references/patterns.md`** — os 36 padrões de deteção com exemplos e correções. Consulta sempre que estiveres a detetar ou corrigir problemas no texto.
 - **`references/composition.md`** — princípios de composição em pt-PT: clareza, concisão, voz ativa contextual, ritmo e estrutura de parágrafos, sempre com proteção contra invenções. Consulta antes de uma reescrita.
 - **`references/formats.md`** — regras específicas por formato (e-mail, documentação técnica, UI, sinopse, texto jurídico, guião e texto falado). Consulta quando souberes o formato.
@@ -160,7 +166,9 @@ Combina os princípios de **`references/composition.md`** com as regras do forma
 Antes de responder, confirma silenciosamente:
 
 - [ ] Mantive todos os factos e não acrescentei nenhum?
-- [ ] Preservei nomes próprios, números, citações e termos literais?
+- [ ] Preservei nomes próprios, números, datas, URLs, citações e termos literais?
+- [ ] Mantive negação, modalidade, quantidades, causalidade e relações temporais?
+- [ ] Evitei reescrever texto já natural apenas para o tornar diferente?
 - [ ] O texto está em pt-PT e segue AO90 de forma coerente?
 - [ ] Evitei substituições cegas entre pt-BR e pt-PT?
 - [ ] Mantive a voz e o nível de formalidade adequados?

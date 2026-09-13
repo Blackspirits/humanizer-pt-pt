@@ -135,6 +135,21 @@
           },
           "must_not_claim_ai_origin": {
             "type": "boolean"
+          },
+          "preserve_semantic_anchors": {
+            "type": "boolean"
+          },
+          "semantic_anchor_exceptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "max_change_ratio": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
           }
         },
         "additionalProperties": true

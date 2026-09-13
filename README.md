@@ -284,3 +284,8 @@ MIT. Consulta `LICENSE`, `NOTICE` e `CITATION.cff`.
 ## Contribuir
 
 Consulta [`CONTRIBUTING.md`](CONTRIBUTING.md). Ao alterar uma regra, acrescenta pelo menos um caso de regressão relevante e confirma os falsos positivos.
+
+
+## Segurança de intervenção
+
+Desde a 1.1.0, a skill tem uma política explícita de precedência e orçamento de intervenção em [`references/intervention.md`](references/intervention.md). A suite de evals inclui proteção automática de âncoras semânticas e casos negativos contra over-editing.

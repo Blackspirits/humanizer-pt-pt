@@ -52,6 +52,45 @@ class ScoreResultsTests(unittest.TestCase):
         response = score_results.parse_response({"overall_severity": "limpo", "patterns": [], "summary": "Sem padrões."}, "AUDITAR")
         self.assertFalse(score_results.response_is_empty(response, "AUDITAR"))
 
+    def test_semantic_anchor_guard_rejects_changed_number(self) -> None:
+        case = {
+            "id": "anchors",
+            "mode": "QA HUMANO",
+            "input": "O desconto é 30% até 2026-10-01.",
+            "preserve_semantic_anchors": True,
+        }
+        response = score_results.parse_response(
+            "O desconto é 20% até 2026-10-01.",
+            case["mode"],
+        )
+        result = score_results.score_case(case, response)
+        self.assertFalse(result["passed"])
+
+    def test_over_editing_budget_rejects_large_rewrite(self) -> None:
+        case = {
+            "id": "budget",
+            "mode": "QA HUMANO",
+            "input": "O relatório está pronto.",
+            "max_change_ratio": 0.2,
+        }
+        response = score_results.parse_response(
+            "Concluímos a análise e apresentamos agora as principais conclusões.",
+            case["mode"],
+        )
+        result = score_results.score_case(case, response)
+        self.assertFalse(result["passed"])
+
+    def test_over_editing_budget_accepts_unchanged_natural_text(self) -> None:
+        case = {
+            "id": "budget-clean",
+            "mode": "QA HUMANO",
+            "input": "O relatório descreve os resultados do ensaio.",
+            "max_change_ratio": 0.05,
+        }
+        response = score_results.parse_response(case["input"], case["mode"])
+        result = score_results.score_case(case, response)
+        self.assertTrue(result["passed"])
+
 
 if __name__ == "__main__":
     unittest.main()
