@@ -285,8 +285,8 @@ def _list_of_strings(case: dict[str, Any], field: str, case_id: str) -> None:
 def validate_evals(valid_pattern_ids: set[int]) -> None:
     data = load_json("evals/cases.json")
     cases = data.get("cases")
-    if not isinstance(cases, list) or len(cases) < 46:
-        fail("evals/cases.json deve conter pelo menos 46 casos")
+    if not isinstance(cases, list) or len(cases) < 60:
+        fail("evals/cases.json deve conter pelo menos 60 casos")
     ids: list[str] = []
     modes: set[str] = set()
     audit_count = 0
@@ -374,6 +374,17 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
         "semantic-quote-email-001",
         "overediting-clean-001",
         "auto-minimal-intervention-001",
+        "semantic-certainty-002",
+        "semantic-obligation-002",
+        "semantic-conditional-001",
+        "semantic-temporal-order-001",
+        "semantic-causality-001",
+        "semantic-comparison-001",
+        "negative-legal-001",
+        "negative-technical-002",
+        "negative-literary-001",
+        "negative-orality-001",
+        "negative-humour-001",
     }
     missing_context_cases = required_context_cases.difference(ids)
     if missing_context_cases:
@@ -384,10 +395,10 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
         fail(f"cobertura de modos incompleta: {sorted(modes)}")
     safety_cases = [case for case in cases if case.get("preserve_semantic_anchors")]
     overediting_cases = [case for case in cases if "max_change_ratio" in case]
-    if len(safety_cases) < 3:
-        fail("devem existir pelo menos três avaliações com preservação de âncoras semânticas")
-    if len(overediting_cases) < 3:
-        fail("devem existir pelo menos três avaliações de over-editing")
+    if len(safety_cases) < 5:
+        fail("devem existir pelo menos cinco avaliações com preservação de âncoras semânticas")
+    if len(overediting_cases) < 10:
+        fail("devem existir pelo menos dez avaliações de over-editing")
     if audit_count < 4:
         fail("devem existir pelo menos quatro avaliações AUDITAR")
     expected_audit_severities = {"limpo", "ligeiro", "moderado", "pesado"}
