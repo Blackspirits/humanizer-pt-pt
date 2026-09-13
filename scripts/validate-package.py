@@ -178,7 +178,7 @@ def validate_references() -> list[int]:
         "A melhor alteração é a menor alteração",
         "Exatidão semântica e não invenção",
         "max_change_ratio",
-        "Language Intelligence",
+        "Conhecimento linguístico pt-PT",
     ):
         if phrase not in intervention:
             fail(f"references/intervention.md não contém: {phrase}")
