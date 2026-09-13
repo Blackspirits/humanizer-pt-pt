@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": "1.1.1",
+    "version": "1.1.2",
     "locale": "pt-PT",
     "purpose": "objective and model-assisted regression corpus with manual editorial checks"
   },
@@ -303,6 +303,13 @@
       "manual_checks": [
         "Mantém a cadência informal e direta da amostra.",
         "Usa primeira pessoa e hesitação natural quando adequado, sem copiar frases completas."
+      ],
+      "text_format": "GENERAL",
+      "voice_traits_to_preserve": [
+        "frases curtas e conversacionais",
+        "primeira pessoa",
+        "informalidade moderada",
+        "hesitação natural sem linguagem empresarial"
       ]
     },
     {
@@ -979,6 +986,167 @@
       ],
       "manual_checks": [
         "Preserva a ironia seca; não explica a piada nem neutraliza o tom."
+      ]
+    },
+    {
+      "id": "voice-dry-001",
+      "mode": "CLONAR VOZ",
+      "text_format": "GENERAL",
+      "input": "A proposta apresenta vantagens relevantes, mas existem riscos que devem ser avaliados antes de avançar.",
+      "voice_sample": "Não me parece má ideia. Mas também não me apetece descobrir o problema depois de estar tudo em produção.",
+      "voice_traits_to_preserve": [
+        "frases curtas",
+        "secura",
+        "contraste sem conectores formais"
+      ],
+      "must_preserve": [
+        "vantagens",
+        "riscos"
+      ],
+      "max_change_ratio": 0.55,
+      "manual_checks": [
+        "Mantém o tom seco e direto sem copiar frases da amostra nem inventar experiências."
+      ]
+    },
+    {
+      "id": "voice-parenthetical-001",
+      "mode": "CLONAR VOZ",
+      "text_format": "EDITORIAL",
+      "input": "O sistema funciona bem na maioria dos casos, embora a configuração inicial seja pouco intuitiva.",
+      "voice_sample": "Funciona, sim (e até bastante bem), mas a configuração inicial parece ter sido desenhada por alguém que já sabia onde tudo estava.",
+      "voice_traits_to_preserve": [
+        "apartes entre parênteses",
+        "ironia leve",
+        "frase longa controlada"
+      ],
+      "must_preserve": [
+        "funciona bem",
+        "configuração inicial",
+        "pouco intuitiva"
+      ],
+      "manual_checks": [
+        "Replica o uso de aparte/ironia sem acrescentar factos sobre quem desenhou o sistema."
+      ]
+    },
+    {
+      "id": "voice-technical-terse-001",
+      "mode": "CLONAR VOZ",
+      "text_format": "TECHNICAL_DOCS",
+      "input": "A migração requer uma cópia de segurança antes da atualização. Se falhar, é necessário restaurar a base de dados anterior.",
+      "voice_sample": "Faz backup primeiro. Atualiza. Se falhar, restaura e não inventes atalhos.",
+      "voice_traits_to_preserve": [
+        "imperativos curtos",
+        "poucos conectores",
+        "tom operacional"
+      ],
+      "must_preserve": [
+        "cópia de segurança",
+        "Se falhar",
+        "restaurar a base de dados anterior"
+      ],
+      "max_change_ratio": 0.55,
+      "manual_checks": [
+        "Preserva a sequência e não transforma a amostra numa fonte de requisitos novos."
+      ]
+    },
+    {
+      "id": "format-ui-clean-002",
+      "mode": "QA HUMANO",
+      "text_format": "UI_MICROCOPY",
+      "input": "Guardar alterações",
+      "max_change_ratio": 0,
+      "must_preserve_exact": [
+        "Guardar alterações"
+      ],
+      "manual_checks": [
+        "Rótulo natural e conciso; não o transforma numa frase completa."
+      ]
+    },
+    {
+      "id": "format-email-natural-001",
+      "mode": "QA HUMANO",
+      "text_format": "EMAIL_MESSAGE",
+      "input": "Olá Marta, envio em anexo a versão revista. Se estiver tudo bem, publico-a amanhã. Obrigado.",
+      "must_preserve": [
+        "Se estiver tudo bem",
+        "amanhã"
+      ],
+      "max_change_ratio": 0.08,
+      "manual_checks": [
+        "Não aumenta a formalidade nem acrescenta fórmulas empresariais."
+      ]
+    },
+    {
+      "id": "format-academic-hedging-001",
+      "mode": "QA HUMANO",
+      "text_format": "ACADEMIC_LEGAL",
+      "input": "Estes resultados sugerem uma associação, mas não permitem estabelecer uma relação causal.",
+      "must_preserve": [
+        "sugerem uma associação",
+        "não permitem estabelecer uma relação causal"
+      ],
+      "max_change_ratio": 0.08,
+      "manual_checks": [
+        "Preserva o hedging metodológico e o registo académico."
+      ]
+    },
+    {
+      "id": "format-editorial-opinion-001",
+      "mode": "QA HUMANO",
+      "text_format": "EDITORIAL",
+      "input": "A decisão parece-me precipitada. Não porque a ideia seja má, mas porque ainda faltam dados.",
+      "must_preserve": [
+        "parece-me precipitada",
+        "Não porque a ideia seja má",
+        "ainda faltam dados"
+      ],
+      "max_change_ratio": 0.1,
+      "manual_checks": [
+        "Mantém a primeira pessoa e a posição editorial do autor."
+      ]
+    },
+    {
+      "id": "format-fiction-dialogue-001",
+      "mode": "QA HUMANO",
+      "text_format": "FICTION",
+      "input": "— Vais mesmo? — perguntou ela.\\n— Vou. Se ficar, arrependo-me.",
+      "must_preserve": [
+        "— Vais mesmo?",
+        "— Vou.",
+        "Se ficar, arrependo-me."
+      ],
+      "max_change_ratio": 0.05,
+      "manual_checks": [
+        "Preserva pontuação de diálogo, ritmo e concisão."
+      ]
+    },
+    {
+      "id": "format-changelog-001",
+      "mode": "QA HUMANO",
+      "text_format": "CHANGELOG_RELEASE",
+      "input": "Corrigido o crash ao abrir ficheiros vazios. Mantida a compatibilidade com a API v2.4.1.",
+      "must_preserve_exact": [
+        "v2.4.1"
+      ],
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.08,
+      "manual_checks": [
+        "Não transforma changelog em texto promocional nem inventa impacto."
+      ]
+    },
+    {
+      "id": "format-subtitles-001",
+      "mode": "QA HUMANO",
+      "text_format": "SUBTITLES",
+      "input": "Não sei. Talvez amanhã.\\nAgora não consigo.",
+      "must_preserve": [
+        "Não sei.",
+        "Talvez amanhã.",
+        "Agora não consigo."
+      ],
+      "max_change_ratio": 0.05,
+      "manual_checks": [
+        "Preserva hesitação, temporalidade e oralidade; não explica o subtexto."
       ]
     }
   ]

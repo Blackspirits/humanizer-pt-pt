@@ -65,3 +65,10 @@ Casos de reescrita podem declarar:
 - `max_change_ratio` — limite de diferença para casos em que a intervenção deve permanecer contida.
 
 Estas métricas são guards de regressão, não uma função universal de qualidade. Mudanças semânticas subtis continuam a exigir critérios específicos e revisão.
+
+
+## Formato e voz
+
+Casos podem declarar `text_format` para tornar explícito o contexto em que o comportamento está a ser avaliado. O formato é metadata de produto/eval, não uma regra linguística.
+
+Casos `CLONAR VOZ` devem declarar `voice_traits_to_preserve`: traços observáveis da amostra que interessam ao caso, como ritmo, secura, apartes, primeira pessoa ou densidade de conectores. Estes traços orientam a revisão humana do resultado; não constituem um score automático de identidade/autoria nem autorizam copiar frases da amostra.

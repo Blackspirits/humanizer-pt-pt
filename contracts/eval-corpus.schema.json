@@ -150,6 +150,31 @@
             "type": "number",
             "minimum": 0,
             "maximum": 1
+          },
+          "text_format": {
+            "enum": [
+              "GENERAL",
+              "EMAIL_MESSAGE",
+              "TECHNICAL_DOCS",
+              "CHANGELOG_RELEASE",
+              "UI_MICROCOPY",
+              "LOCALIZATION",
+              "AUDIOVISUAL_METADATA",
+              "SPOKEN_SCRIPT",
+              "EDITORIAL",
+              "ACADEMIC_LEGAL",
+              "FICTION",
+              "SOCIAL_POST",
+              "SUBTITLES"
+            ]
+          },
+          "voice_traits_to_preserve": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
           }
         },
         "additionalProperties": true
