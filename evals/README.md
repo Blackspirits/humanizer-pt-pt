@@ -2,6 +2,8 @@
 
 `cases.json` é um corpus de regressão para respostas de modelos. Não é um conjunto de testes unitários da skill nem prova que um texto foi escrito por uma pessoa.
 
+Os formatos machine-readable usados por esta camada estão documentados em `contracts/`, incluindo os contratos de corpus, resposta de reescrita e resposta AUDITAR.
+
 ## O que é automático
 
 `score-results.py` consegue verificar:
