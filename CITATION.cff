@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: Mota
     given-names: Filipe
-version: 1.1.0
+version: 1.1.1
 date-released: 2026-09-13
 url: "https://github.com/Blackspirits/humanizer-pt-pt"
 repository-code: "https://github.com/Blackspirits/humanizer-pt-pt"
