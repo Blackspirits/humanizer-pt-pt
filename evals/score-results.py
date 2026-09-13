@@ -23,6 +23,7 @@ from humanizer_support.catalog import (
     OVERALL_SEVERITIES,
     pattern_ids,
 )
+from humanizer_support.semantic import change_ratio, missing_semantic_anchors
 
 CASES_PATH = ROOT / "evals" / "cases.json"
 PATTERN_IDS = set(pattern_ids(ROOT))
@@ -109,6 +110,30 @@ def _score_rewrite(case: dict[str, Any], response: ResponseData) -> list[dict[st
         words = len(compact.split())
         ok = "\n" not in compact and words <= 6 and not compact.endswith((".", ";", ":"))
         _record(checks, "short UI label", ok, f"palavras={words}")
+    if case.get("preserve_semantic_anchors"):
+        missing = missing_semantic_anchors(
+            case["input"],
+            output,
+            exceptions=case.get("semantic_anchor_exceptions", []),
+        )
+        detail = ", ".join(f"{item.kind}:{item.value}" for item in missing)
+        _record(
+            checks,
+            "preservar âncoras semânticas determinísticas",
+            not missing,
+            detail,
+        )
+
+    max_change_ratio = case.get("max_change_ratio")
+    if isinstance(max_change_ratio, (int, float)) and not isinstance(max_change_ratio, bool):
+        ratio = change_ratio(case["input"], output)
+        _record(
+            checks,
+            f"change_ratio <= {max_change_ratio}",
+            ratio <= float(max_change_ratio),
+            f"ratio={ratio:.3f}",
+        )
+
     expected = case.get("expected_mode_selection")
     if expected:
         chosen = response.selected_mode.strip().upper() if response.selected_mode else None
