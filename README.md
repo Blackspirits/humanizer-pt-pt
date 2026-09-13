@@ -5,23 +5,15 @@ Skill portátil para rever, auditar e reescrever texto em português europeu (`p
 É inspirada em [`blader/humanizer`](https://github.com/blader/humanizer), mas constitui uma adaptação editorial própria para pt-PT, não uma tradução literal.
 
 
-## Relação com PT-PT Language Intelligence
+## Distribuição pública autónoma
 
-`humanizer-pt-pt` é uma **skill consumidora**. Não é a fonte de verdade BlackSpirits para conhecimento linguístico genérico de português europeu.
+Este repositório é a distribuição pública e instalável do Humanizer pt-PT. Tudo o que uma release necessita para executar, validar e documentar o comportamento publicado existe neste repositório; não há dependências runtime de repositórios ou serviços privados.
 
-Essa autoridade pertence a [`Blackspirits/ptpt-language-intelligence`](https://github.com/Blackspirits/ptpt-language-intelligence).
+O Humanizer é responsável pelo comportamento da skill: modos, política de intervenção, preservação da voz, composição, referências aplicadas, evals e tooling da release. Conhecimento linguístico incluído numa release é tratado como material versionado dessa release, sem transformar o Humanizer numa autoridade universal sobre a língua.
 
-O Humanizer continua responsável por:
+A manutenção pode recorrer a investigação e validação upstream não públicas. Apenas material revisto, testado e explicitamente publicado entra neste repositório.
 
-- modos de humanização e revisão;
-- política de intervenção e preservação da voz;
-- composição da resposta;
-- regras específicas da skill;
-- evals e comportamento do produto.
-
-Conhecimento linguístico genérico — por exemplo contraste pt-PT/pt-BR, naturalidade, sintaxe, colocação pronominal, preferências lexicais e translationese — deve migrar progressivamente para snapshots versionados do PT-PT Language Intelligence. Até existir um snapshot aplicável, os ficheiros locais continuam a definir o comportamento da release atual.
-
-Consumir esse conhecimento não transfere ownership para o Humanizer.
+Ver [`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md).
 
 ## O que resolve
 
