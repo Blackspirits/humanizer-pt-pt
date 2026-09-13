@@ -4,6 +4,10 @@ A portable Agent Skill for auditing, editing and rewriting European Portuguese (
 
 Inspired by [`blader/humanizer`](https://github.com/blader/humanizer), this is an independent language-specific editorial adaptation, not a literal translation.
 
+## Self-contained public distribution
+
+This repository is the public, installable distribution of Humanizer pt-PT. Every published release contains everything required to run and validate the skill and has no runtime dependency on private repositories or services. Maintenance may use non-public upstream research, but only reviewed, tested and explicitly published material becomes part of this repository.
+
 ## Modes
 
 - `AUTO`: selects the least destructive suitable rewrite mode.
