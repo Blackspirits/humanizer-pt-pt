@@ -6,7 +6,6 @@ import argparse
 import gzip
 import hashlib
 import io
-import re
 import subprocess
 import sys
 import tarfile
@@ -14,31 +13,62 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED_DIRS = {".git", "dist", "__pycache__"}
+sys.path.insert(0, str(ROOT))
+
+from humanizer_support.catalog import skill_version
+
+EXCLUDED_DIRS = {"__pycache__"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
+RELEASE_ENTRIES = {
+    ".claude-plugin",
+    ".editorconfig",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "CITATION.cff",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "NOTICE",
+    "README.en.md",
+    "README.md",
+    "SKILL.md",
+    "contracts",
+    "docs",
+    "evals",
+    "examples",
+    "humanizer_support",
+    "profiles",
+    "references",
+    "scripts",
+    "tests",
+    "vocabulary-map.json",
+}
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 
 
 def read_version() -> str:
-    text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    match = re.search(r"^[ \t]+version:\s*[\"']?([^\"'\n]+)", text, flags=re.MULTILINE)
-    if not match:
-        raise SystemExit("ERRO: versão não encontrada em SKILL.md")
-    return match.group(1).strip()
+    try:
+        return skill_version(ROOT)
+    except ValueError as exc:
+        raise SystemExit(f"ERRO: {exc}") from exc
 
 
 def iter_files() -> list[Path]:
     files: list[Path] = []
-    for path in ROOT.rglob("*"):
-        if not path.is_file():
-            continue
-        rel = path.relative_to(ROOT)
-        if any(part in EXCLUDED_DIRS for part in rel.parts):
-            continue
-        if path.suffix in EXCLUDED_SUFFIXES:
-            continue
-        files.append(path)
-    return sorted(files, key=lambda p: p.relative_to(ROOT).as_posix())
+    for entry in sorted(RELEASE_ENTRIES):
+        source = ROOT / entry
+        if not source.exists():
+            raise SystemExit(f"ERRO: entrada de release em falta: {entry}")
+        candidates = [source] if source.is_file() else source.rglob("*")
+        for path in candidates:
+            if not path.is_file():
+                continue
+            rel = path.relative_to(ROOT)
+            if any(part in EXCLUDED_DIRS for part in rel.parts):
+                continue
+            if path.suffix in EXCLUDED_SUFFIXES:
+                continue
+            files.append(path)
+    return sorted(files, key=lambda item: item.relative_to(ROOT).as_posix())
 
 
 def create_zip(target: Path, files: list[Path]) -> None:
