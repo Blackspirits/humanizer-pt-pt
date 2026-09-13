@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1 - 2026-09-13
+
+### Arquitetura e tooling
+
+- Documentada a arquitetura própria do Humanizer: modelo/agente como runtime, `SKILL.md` como contrato de comportamento, Language Intelligence como autoridade linguística genérica e Python apenas como tooling de suporte.
+- Adicionados contratos JSON para respostas de reescrita, AUDITAR e corpus de evals.
+- Versão da release passou a ser derivada da própria skill; removido o hardcode `EXPECTED_VERSION = 1.0.0`.
+- IDs válidos de padrões passam a ser derivados de `references/patterns.md`; o tooling deixou de congelar o limite 36.
+- Empacotamento de release passou de inclusão implícita de todo o repo para allowlist explícita.
+- Criado `humanizer_support/` para lógica partilhada entre validação, evals e release.
+- Mantido o comportamento editorial da 1.0.0; esta patch melhora a fundação de engenharia e a capacidade de evolução segura.
+
 ## 1.0.0 - 2026-07-25
 
 Primeira versão pública.
