@@ -9,10 +9,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from humanizer_support.catalog import VALID_MODES, pattern_ids
+
 EXPECTED_NAME = "humanizer-pt-pt"
-EXPECTED_VERSION = "1.0.0"
-EXPECTED_PATTERN_COUNT = 36
-VALID_MODES = {"AUTO", "AUDITAR", "HUMANIZAR", "QA HUMANO", "CLONAR VOZ"}
 REQUIRED_FILES = [
     ".editorconfig",
     ".claude-plugin/marketplace.json",
@@ -22,6 +23,11 @@ REQUIRED_FILES = [
     "CHANGELOG.md",
     "CITATION.cff",
     "CONTRIBUTING.md",
+    "contracts/README.md",
+    "contracts/audit-response.schema.json",
+    "contracts/eval-corpus.schema.json",
+    "contracts/rewrite-response.schema.json",
+    "docs/ARCHITECTURE.md",
     "LICENSE",
     "NOTICE",
     "README.en.md",
@@ -33,6 +39,8 @@ REQUIRED_FILES = [
     "examples/audit-report.md",
     "examples/before-after.md",
     "examples/terminology-overrides.json",
+    "humanizer_support/__init__.py",
+    "humanizer_support/catalog.py",
     "profiles/blackspirits.md",
     "references/composition.md",
     "references/formats.md",
@@ -40,6 +48,7 @@ REQUIRED_FILES = [
     "references/regional-variation.md",
     "scripts/package-release.py",
     "scripts/validate-package.py",
+    "tests/test_engineering_foundation.py",
     "tests/test_package.py",
     "tests/test_score_results.py",
     "vocabulary-map.json",
@@ -134,14 +143,12 @@ def validate_skill() -> str:
     return version
 
 
-def validate_references() -> None:
+def validate_references() -> list[int]:
     patterns = read("references/patterns.md")
-    ids = [
-        int(match.group(1))
-        for match in re.finditer(r"^###\s+(\d+)\.\s+", patterns, flags=re.MULTILINE)
-    ]
-    if ids != list(range(1, EXPECTED_PATTERN_COUNT + 1)):
-        fail(f"numeração dos padrões inválida: {ids}")
+    try:
+        ids = pattern_ids(ROOT)
+    except ValueError as exc:
+        fail(str(exc))
     for phrase in (
         "O travessão é válido em português. Não o proíbas.",
         "notoriedade por associação",
@@ -170,6 +177,7 @@ def validate_references() -> None:
     ):
         if heading not in formats:
             fail(f"references/formats.md não contém: {heading}")
+    return ids
 
 
 def validate_versions(skill_version: str) -> None:
@@ -184,8 +192,11 @@ def validate_versions(skill_version: str) -> None:
     citation_match = re.search(r"^version:\s*([^\s]+)$", citation, flags=re.MULTILINE)
     sources["CITATION.cff"] = citation_match.group(1) if citation_match else None
     for source, version in sources.items():
-        if version != EXPECTED_VERSION:
-            fail(f"versão incorreta em {source}: {version!r}")
+        if version != skill_version:
+            fail(
+                f"versão incorreta em {source}: {version!r}; "
+                f"esperado {skill_version!r}"
+            )
 
 
 def validate_vocabulary() -> None:
@@ -257,7 +268,7 @@ def _list_of_strings(case: dict[str, Any], field: str, case_id: str) -> None:
         fail(f"campo {field} inválido no caso {case_id}")
 
 
-def validate_evals() -> None:
+def validate_evals(valid_pattern_ids: set[int]) -> None:
     data = load_json("evals/cases.json")
     cases = data.get("cases")
     if not isinstance(cases, list) or len(cases) < 46:
@@ -295,7 +306,10 @@ def validate_evals() -> None:
             audit_count += 1
             for field in ("expected_pattern_ids", "forbidden_pattern_ids"):
                 value = case.get(field, [])
-                if not isinstance(value, list) or not all(isinstance(item, int) and 1 <= item <= 36 for item in value):
+                if not isinstance(value, list) or not all(
+                    isinstance(item, int) and item in valid_pattern_ids
+                    for item in value
+                ):
                     fail(f"campo {field} inválido no caso {case_id}")
             severity = case.get("expected_overall_severity")
             if severity not in {"limpo", "ligeiro", "moderado", "pesado"}:
@@ -334,6 +348,23 @@ def validate_evals() -> None:
     expected_audit_severities = {"limpo", "ligeiro", "moderado", "pesado"}
     if audit_severities != expected_audit_severities:
         fail("cobertura incompleta dos níveis gerais de AUDITAR: " + ", ".join(sorted(audit_severities)))
+
+
+
+def validate_contracts() -> None:
+    for relative_path in (
+        "contracts/audit-response.schema.json",
+        "contracts/eval-corpus.schema.json",
+        "contracts/rewrite-response.schema.json",
+    ):
+        data = load_json(relative_path)
+        if data.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+            fail(f"{relative_path} não usa JSON Schema Draft 2020-12")
+        contract_id = data.get("$id")
+        if not isinstance(contract_id, str) or not contract_id.startswith(
+            "https://blackspirits.dev/humanizer-pt-pt/contracts/"
+        ):
+            fail(f"$id inválido em {relative_path}")
 
 
 def validate_license_and_attribution() -> None:
@@ -418,17 +449,18 @@ def validate_markdown_integrity() -> None:
 def main() -> None:
     validate_required_files()
     skill_version = validate_skill()
-    validate_references()
+    ids = validate_references()
     validate_versions(skill_version)
     validate_vocabulary()
-    validate_evals()
+    validate_evals(set(ids))
+    validate_contracts()
     validate_license_and_attribution()
     validate_manifests()
     validate_documentation_and_ci()
     validate_markdown_integrity()
     print(
         f"OK: {EXPECTED_NAME} {skill_version}; "
-        f"{EXPECTED_PATTERN_COUNT} padrões; pacote validado."
+        f"{len(ids)} padrões; pacote validado."
     )
 
 
