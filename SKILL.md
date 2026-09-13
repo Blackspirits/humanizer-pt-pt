@@ -9,7 +9,7 @@ description: |
 license: MIT
 compatibility: Agent Skills clients; Claude Code 2.1.143+.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
   locale: "pt-PT"
 ---
 
