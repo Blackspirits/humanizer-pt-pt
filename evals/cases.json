@@ -303,6 +303,13 @@
       "manual_checks": [
         "Mantém a cadência informal e direta da amostra.",
         "Usa primeira pessoa e hesitação natural quando adequado, sem copiar frases completas."
+      ],
+      "text_format": "GENERAL",
+      "voice_traits_to_preserve": [
+        "frases curtas e conversacionais",
+        "primeira pessoa",
+        "informalidade moderada",
+        "hesitação natural sem linguagem empresarial"
       ]
     },
     {
