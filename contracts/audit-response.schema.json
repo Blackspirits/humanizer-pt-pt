@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackspirits.dev/humanizer-pt-pt/contracts/audit-response.schema.json",
+  "title": "Humanizer pt-PT audit response",
+  "type": "object",
+  "required": [
+    "overall_severity",
+    "patterns",
+    "summary"
+  ],
+  "properties": {
+    "overall_severity": {
+      "enum": [
+        "limpo",
+        "ligeiro",
+        "moderado",
+        "pesado"
+      ]
+    },
+    "patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "severity",
+          "quote"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "severity": {
+            "enum": [
+              "ligeira",
+              "clara",
+              "grave"
+            ]
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string"
+          },
+          "direction": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
