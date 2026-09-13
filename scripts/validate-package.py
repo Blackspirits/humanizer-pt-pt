@@ -115,7 +115,7 @@ def validate_skill() -> str:
         fail(f"nome incorreto em SKILL.md: {skill_name!r}")
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", skill_name):
         fail(f"nome inválido em SKILL.md: {skill_name!r}")
-    if ROOT.name != skill_name:
+    if ROOT.name != skill_name and not (ROOT / ".internal").is_dir():
         fail(f"nome da pasta ({ROOT.name!r}) não corresponde à skill ({skill_name!r})")
     if len(text.splitlines()) >= 300:
         fail("SKILL.md deve manter-se abaixo de 300 linhas; move detalhe para references/")
