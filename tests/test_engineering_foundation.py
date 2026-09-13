@@ -24,7 +24,7 @@ def load_package_release():
 
 class EngineeringFoundationTests(unittest.TestCase):
     def test_version_is_derived_from_skill(self) -> None:
-        self.assertEqual(skill_version(ROOT), "1.1.0")
+        self.assertEqual(skill_version(ROOT), "1.1.1")
 
     def test_pattern_catalog_is_contiguous_without_fixed_maximum(self) -> None:
         ids = pattern_ids(ROOT)
