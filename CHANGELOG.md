@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1 - 2026-09-13
+
+### Regressões semânticas
+
+- Expandido o corpus para cobrir certeza/incerteza, obrigação, condicionais, causalidade, ordem temporal e direção de comparações.
+- Adicionados casos negativos para prosa jurídica, documentação técnica, ritmo literário, oralidade e humor intencional.
+- Aumentada a cobertura obrigatória de semantic anchors e over-editing no validador.
+- Sem novas regras linguísticas ou heurísticas de reescrita: esta patch endurece a prova do comportamento introduzido na 1.1.0.
+
 ## 1.1.0 - 2026-09-13
 
 ### Segurança de intervenção
