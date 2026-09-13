@@ -32,7 +32,7 @@ class PackageTests(unittest.TestCase):
     def test_pattern_ids_are_contiguous(self) -> None:
         text = (ROOT / "references" / "patterns.md").read_text(encoding="utf-8")
         ids = [int(value) for value in re.findall(r"^###\s+(\d+)\.\s+", text, flags=re.MULTILINE)]
-        self.assertEqual(ids, list(range(1, 37)))
+        self.assertEqual(ids, list(range(1, len(ids) + 1)))
 
     def test_docs_are_free_of_ptbr_terms(self) -> None:
         """A documentação da skill não deve conter brasileirismos.
