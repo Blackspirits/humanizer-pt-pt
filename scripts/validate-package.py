@@ -28,6 +28,7 @@ REQUIRED_FILES = [
     "contracts/eval-corpus.schema.json",
     "contracts/rewrite-response.schema.json",
     "docs/ARCHITECTURE.md",
+    "docs/DISTRIBUTION.md",
     "LICENSE",
     "NOTICE",
     "README.en.md",
@@ -495,6 +496,25 @@ def validate_documentation_and_ci() -> None:
     for stale in ("tests/cases.json", "Blackspirits/humanizer-pt-PT", "humanizer-pt-PT"):
         if stale in combined:
             fail(f"documentação desatualizada: {stale}")
+
+    public_surfaces = [
+        "README.md",
+        "README.en.md",
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        "docs/ARCHITECTURE.md",
+        "docs/DISTRIBUTION.md",
+        "references/intervention.md",
+        "contracts/README.md",
+    ]
+    public_text = "\n".join(read(name) for name in public_surfaces)
+    for private_ref in (
+        "Blackspirits/ptpt-language-intelligence",
+        "github.com/Blackspirits/ptpt-language-intelligence",
+        "humanizer-pt-pt-internal",
+    ):
+        if private_ref in public_text:
+            fail(f"superfície pública contém referência privada: {private_ref}")
     for required in ("AUDITAR", "references/composition.md", "evals/score-results.py"):
         if required not in combined:
             fail(f"documentação não menciona: {required}")
