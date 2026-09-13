@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": "1.0.1",
+    "version": "1.1.0",
     "locale": "pt-PT",
     "purpose": "objective and model-assisted regression corpus with manual editorial checks"
   },
@@ -757,6 +757,76 @@
       "manual_checks": [
         "Classifica como pesado pela acumulação de padrões, não por uma palavra isolada.",
         "Usa apenas excertos presentes no texto e não o reescreve."
+      ]
+    },
+    {
+      "id": "semantic-negation-modality-001",
+      "mode": "QA HUMANO",
+      "input": "A atualização não é obrigatória e pode ser adiada até 30 de setembro de 2026.",
+      "must_preserve": [
+        "não é obrigatória",
+        "pode ser adiada",
+        "até 30 de setembro de 2026"
+      ],
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.2,
+      "manual_checks": [
+        "Não transforma possibilidade em certeza nem remove a negação.",
+        "Intervém apenas se existir um problema real."
+      ]
+    },
+    {
+      "id": "semantic-numbers-url-001",
+      "mode": "HUMANIZAR",
+      "input": "A versão 2.4.1 reduziu o tempo de resposta em 37%. A documentação está em https://example.com/docs.",
+      "must_preserve": [
+        "reduziu o tempo de resposta"
+      ],
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.45,
+      "manual_checks": [
+        "Preserva versão, percentagem e URL sem alterar o sentido causal."
+      ]
+    },
+    {
+      "id": "semantic-quote-email-001",
+      "mode": "QA HUMANO",
+      "input": "Escreve para qa@example.com e mantém a nota “Não publicar antes da revisão”.",
+      "must_preserve_exact": [
+        "qa@example.com",
+        "“Não publicar antes da revisão”"
+      ],
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.15,
+      "manual_checks": [
+        "Não reescreve a citação nem o endereço."
+      ]
+    },
+    {
+      "id": "overediting-clean-001",
+      "mode": "QA HUMANO",
+      "input": "O relatório descreve os resultados do ensaio e identifica duas limitações metodológicas.",
+      "max_change_ratio": 0.08,
+      "must_preserve": [
+        "duas limitações metodológicas"
+      ],
+      "manual_checks": [
+        "O texto já é natural; alterações cosméticas extensas são regressão."
+      ]
+    },
+    {
+      "id": "auto-minimal-intervention-001",
+      "mode": "AUTO",
+      "input": "A equipa publicou hoje a versão 3.1.0. A atualização corrige dois erros e melhora o desempenho.",
+      "expected_mode_selection": "QA HUMANO",
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.15,
+      "must_preserve": [
+        "corrige dois erros",
+        "melhora o desempenho"
+      ],
+      "manual_checks": [
+        "AUTO escolhe QA HUMANO e evita reescrever texto já claro."
       ]
     }
   ]
