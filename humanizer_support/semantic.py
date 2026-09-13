@@ -17,7 +17,7 @@ class SemanticAnchor:
 
 _PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("url", re.compile(r"https?://[^\s<>()]+", re.IGNORECASE)),
-    ("email", re.compile(r"(?<![\w.+-])[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}(?![\w.-])", re.IGNORECASE)),
+    ("email", re.compile(r"(?<![\w.+-])[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}(?![A-Z0-9_-])", re.IGNORECASE)),
     ("inline_code", re.compile(r"`[^`\n]+`")),
     ("quote_curly", re.compile(r"“[^”\n]+”")),
     ("quote_angle", re.compile(r"«[^»\n]+»")),
