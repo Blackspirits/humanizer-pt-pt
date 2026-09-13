@@ -54,3 +54,14 @@ python evals/score-results.py responses.json --report-json report.json
 ```
 
 O comando falha quando uma resposta obrigatória está em falta ou quando um critério verificável falha.
+
+
+## Segurança semântica e over-editing
+
+Casos de reescrita podem declarar:
+
+- `preserve_semantic_anchors: true` — verifica automaticamente âncoras determinísticas do input;
+- `semantic_anchor_exceptions` — exceções explícitas quando uma transformação literal é intencional;
+- `max_change_ratio` — limite de diferença para casos em que a intervenção deve permanecer contida.
+
+Estas métricas são guards de regressão, não uma função universal de qualidade. Mudanças semânticas subtis continuam a exigir critérios específicos e revisão.
