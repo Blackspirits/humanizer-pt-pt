@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.2 - 2026-09-13
+
+### Voz e formatos
+
+- Adicionada metadata de formato aos evals sem transformar formatos em regras linguísticas.
+- Casos CLONAR VOZ passam a declarar traços observáveis que devem ser preservados.
+- Expandido o corpus para UI, e-mail, documentação técnica, changelog, jurídico/académico, editorial, ficção e legendas.
+- Adicionados novos casos de voz seca, apartes/ironia e escrita técnica concisa.
+- O validador exige cobertura mínima de formatos e múltiplos casos CLONAR VOZ.
+- Sem alteração das heurísticas linguísticas: esta patch reforça a avaliação do comportamento por contexto.
+
 ## 1.1.1 - 2026-09-13
 
 ### Regressões semânticas
