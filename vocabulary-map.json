@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "humanizer-pt-pt vocabulary map",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "locale": "pt-PT",
     "orthography": "AO90",
     "policy": "context-aware"

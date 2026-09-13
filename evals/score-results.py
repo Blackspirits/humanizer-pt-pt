@@ -16,11 +16,16 @@ from pathlib import Path
 from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from humanizer_support.catalog import (
+    AUDIT_SEVERITIES,
+    OVERALL_SEVERITIES,
+    pattern_ids,
+)
+
 CASES_PATH = ROOT / "evals" / "cases.json"
-REWRITE_MODES = {"HUMANIZAR", "QA HUMANO", "CLONAR VOZ", "AUTO"}
-VALID_MODES = REWRITE_MODES | {"AUDITAR"}
-AUDIT_SEVERITIES = {"ligeira", "clara", "grave"}
-OVERALL_SEVERITIES = {"limpo", "ligeiro", "moderado", "pesado"}
+PATTERN_IDS = set(pattern_ids(ROOT))
 AI_ORIGIN_CLAIMS = (
     r"\b\d+(?:[.,]\d+)?\s*%\b.{0,40}\b(?:ia|inteligência artificial)\b",
     r"\b(?:ia|inteligência artificial)\b.{0,40}\b\d+(?:[.,]\d+)?\s*%\b",
@@ -125,7 +130,7 @@ def _score_audit(case: dict[str, Any], response: ResponseData) -> list[dict[str,
         pid = item.get("id")
         item_severity = item.get("severity")
         quote = item.get("quote")
-        if not isinstance(pid, int) or not 1 <= pid <= 36:
+        if not isinstance(pid, int) or pid not in PATTERN_IDS:
             invalid_items += 1
         else:
             ids.append(pid)

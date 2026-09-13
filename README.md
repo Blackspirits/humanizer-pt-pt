@@ -150,7 +150,11 @@ Texto a rever:
 [texto]
 ```
 
-## Arquitetura editorial
+## Arquitetura
+
+O Humanizer não é uma aplicação Python que transforma texto de forma determinística. O runtime principal é o modelo/agente que executa a skill; o repositório fornece o contrato de comportamento, referências, evals e tooling de suporte.
+
+A arquitetura completa e a separação entre comportamento, conhecimento linguístico, contratos e tooling estão em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 A skill usa divulgação progressiva:
 
@@ -161,6 +165,8 @@ A skill usa divulgação progressiva:
 - `references/regional-variation.md`: preservação de variedades portuguesas legítimas;
 - `vocabulary-map.json`: pt-BR, UI, tradução literal e notas contextuais;
 - `profiles/blackspirits.md`: preferências opcionais do autor;
+- `contracts/`: contratos machine-readable para outputs e corpus de evals;
+- `humanizer_support/`: utilitários partilhados por validação, evals e release;
 - `evals/`: corpus editorial e runner de respostas reais;
 - `tests/`: testes unitários dos scripts do repositório.
 

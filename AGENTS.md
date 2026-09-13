@@ -8,6 +8,8 @@
 - `references/formats.md`: regras específicas por género textual.
 - `vocabulary-map.json`: apoio terminológico contextual.
 - `evals/cases.json`: corpus editorial de regressão.
+- `contracts/`: contratos de outputs/evals.
+- `docs/ARCHITECTURE.md`: fronteira entre runtime, comportamento, conhecimento e tooling.
 
 
 ## Autoridade linguística externa
@@ -32,7 +34,9 @@ Preferências específicas do Humanizer, modos, política de saída, proteção 
 - Não converter preferências contextuais em substituições cegas.
 - Não alterar nomes próprios, citações, código ou títulos oficiais nos exemplos.
 - Não substituir uma atribuição vaga por uma fonte inventada.
-- Manter as versões sincronizadas.
+- Manter as versões sincronizadas sem hardcodes redundantes no tooling.
+- Derivar IDs de padrões do catálogo canónico em vez de congelar limites no código.
+- Manter release packaging por allowlist explícita.
 - Atualizar evals quando uma regra muda.
 - Adicionar testes unitários quando o comportamento dos scripts muda.
 - Executar antes de publicar:
