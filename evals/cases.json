@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "locale": "pt-PT",
     "purpose": "objective and model-assisted regression corpus with manual editorial checks"
   },
@@ -827,6 +827,158 @@
       ],
       "manual_checks": [
         "AUTO escolhe QA HUMANO e evita reescrever texto já claro."
+      ]
+    },
+    {
+      "id": "semantic-certainty-002",
+      "mode": "QA HUMANO",
+      "input": "Os dados sugerem que a alteração pode reduzir o consumo, mas ainda não sabemos se o efeito se mantém a longo prazo.",
+      "must_preserve": [
+        "sugerem",
+        "pode reduzir",
+        "ainda não sabemos"
+      ],
+      "max_change_ratio": 0.22,
+      "manual_checks": [
+        "Não transforma hipótese em conclusão nem elimina a incerteza."
+      ]
+    },
+    {
+      "id": "semantic-obligation-002",
+      "mode": "QA HUMANO",
+      "input": "Não é necessário reiniciar o servidor; a operação pode ser feita mais tarde.",
+      "must_preserve": [
+        "Não é necessário",
+        "pode ser feita mais tarde"
+      ],
+      "max_change_ratio": 0.18,
+      "manual_checks": [
+        "Não cria obrigação nem urgência inexistentes."
+      ]
+    },
+    {
+      "id": "semantic-conditional-001",
+      "mode": "QA HUMANO",
+      "input": "Se o serviço falhar, o cliente tenta novamente; caso contrário, mantém a sessão atual.",
+      "must_preserve": [
+        "Se o serviço falhar",
+        "caso contrário",
+        "mantém a sessão atual"
+      ],
+      "max_change_ratio": 0.2,
+      "manual_checks": [
+        "Preserva a relação condicional e os dois ramos."
+      ]
+    },
+    {
+      "id": "semantic-temporal-order-001",
+      "mode": "QA HUMANO",
+      "input": "Depois de fechar a base de dados e antes de reiniciar o serviço, cria uma cópia de segurança.",
+      "must_preserve": [
+        "Depois de fechar a base de dados",
+        "antes de reiniciar o serviço",
+        "cria uma cópia de segurança"
+      ],
+      "max_change_ratio": 0.2,
+      "manual_checks": [
+        "Não inverte a ordem temporal das operações."
+      ]
+    },
+    {
+      "id": "semantic-causality-001",
+      "mode": "QA HUMANO",
+      "input": "O erro surgiu depois da atualização, mas não há evidência de que tenha sido causado por ela.",
+      "must_preserve": [
+        "depois da atualização",
+        "não há evidência",
+        "causado por ela"
+      ],
+      "max_change_ratio": 0.2,
+      "manual_checks": [
+        "Não converte sucessão temporal em causalidade confirmada."
+      ]
+    },
+    {
+      "id": "semantic-comparison-001",
+      "mode": "QA HUMANO",
+      "input": "A versão A foi 12% mais rápida do que a versão B, mas utilizou mais memória.",
+      "must_preserve": [
+        "mais rápida do que a versão B",
+        "utilizou mais memória"
+      ],
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.22,
+      "manual_checks": [
+        "Preserva a direção da comparação e o trade-off de memória."
+      ]
+    },
+    {
+      "id": "negative-legal-001",
+      "mode": "QA HUMANO",
+      "input": "O presente contrato produz efeitos a partir da data da assinatura e mantém-se em vigor até à sua denúncia nos termos previstos.",
+      "max_change_ratio": 0.08,
+      "must_preserve": [
+        "produz efeitos a partir da data da assinatura",
+        "até à sua denúncia"
+      ],
+      "manual_checks": [
+        "O registo jurídico formal é adequado; não o informaliza nem o 'humaniza' por estilo."
+      ]
+    },
+    {
+      "id": "negative-technical-002",
+      "mode": "QA HUMANO",
+      "input": "O endpoint `POST /v1/jobs` devolve HTTP 202 quando o pedido é aceite e não garante que o processamento tenha terminado.",
+      "must_preserve_exact": [
+        "`POST /v1/jobs`",
+        "HTTP 202"
+      ],
+      "must_preserve": [
+        "não garante que o processamento tenha terminado"
+      ],
+      "preserve_semantic_anchors": true,
+      "max_change_ratio": 0.1,
+      "manual_checks": [
+        "Preserva a distinção entre aceitação do pedido e conclusão do processamento."
+      ]
+    },
+    {
+      "id": "negative-literary-001",
+      "mode": "QA HUMANO",
+      "input": "Chovia. Outra vez. E ele, claro, tinha deixado o guarda-chuva em casa.",
+      "max_change_ratio": 0.08,
+      "must_preserve": [
+        "Chovia. Outra vez.",
+        "ele, claro"
+      ],
+      "manual_checks": [
+        "Preserva os fragmentos e o ritmo deliberado; não regulariza a prosa."
+      ]
+    },
+    {
+      "id": "negative-orality-001",
+      "mode": "QA HUMANO",
+      "input": "A gente vai já ali e volta num instante, está bem?",
+      "max_change_ratio": 0.08,
+      "must_preserve": [
+        "A gente vai já ali",
+        "está bem?"
+      ],
+      "manual_checks": [
+        "Preserva a oralidade legítima; não força uma variante mais formal sem pedido."
+      ]
+    },
+    {
+      "id": "negative-humour-001",
+      "mode": "QA HUMANO",
+      "input": "Excelente ideia: fazer deploy à sexta-feira. O que poderia correr mal?",
+      "max_change_ratio": 0.08,
+      "must_preserve": [
+        "Excelente ideia",
+        "O que poderia correr mal?"
+      ],
+      "manual_checks": [
+        "Preserva a ironia seca; não explica a piada nem neutraliza o tom."
       ]
     }
   ]
