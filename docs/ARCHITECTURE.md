@@ -2,118 +2,80 @@
 
 ## Princípio
 
-O Humanizer não é um programa clássico em que Python transforma texto diretamente.
-
-O runtime principal é o **modelo que executa a skill**. O repositório fornece o contrato de comportamento, referências, conhecimento aplicado, evals e tooling que tornam essa execução reproduzível e auditável.
+O runtime principal é o **modelo/agente que executa a skill**. Este repositório público contém tudo o que uma release necessita para executar, validar, testar e documentar o comportamento publicado.
 
 ```text
 MODELO / AGENTE
       ↓ executa
 SKILL.md
       ↓ consulta
-COMPORTAMENTO + REFERÊNCIAS DO HUMANIZER
-      ↓ consome
-CONHECIMENTO LINGUÍSTICO VERSIONADO
-      ↓ validado por
-EVALS / REGRESSÕES
+COMPORTAMENTO + REFERÊNCIAS VERSIONADAS
+      ↓ verificado por
+EVALS / REGRESSÕES / CONTRATOS
 ```
+
+Não existe dependência runtime de repositórios ou serviços privados.
 
 ## Camadas
 
-### 1. Behavior contract — owned pelo Humanizer
+### 1. Behavior contract
 
-`SKILL.md` possui:
+`SKILL.md` possui modos, política de intervenção, preservação de factos/voz, escolha AUTO, política de saída e UX.
 
-- modos;
-- política de intervenção;
-- preservação de factos/voz;
-- escolha AUTO;
-- política de saída;
-- UX da skill.
+### 2. Editorial behavior
 
-Esta camada não deve ser absorvida pelo PT-PT Language Intelligence.
+`references/composition.md`, `references/formats.md`, `references/intervention.md` e os padrões específicos definem **quando e quanto intervir**.
 
-### 2. Editorial behavior — owned pelo Humanizer
+### 3. Conhecimento linguístico aplicado
 
-`references/composition.md`, partes de `references/formats.md` e os padrões específicos de humanização definem como intervir no texto.
+`vocabulary-map.json`, referências e exemplos contêm apenas o conhecimento necessário à release publicada.
 
-Um padrão pode usar conhecimento linguístico externo, mas a decisão de **quando e quanto reescrever** continua local.
+Esse conteúdo:
+- é versionado com a release;
+- deve ser contextual e protegido contra falsos positivos;
+- não transforma o Humanizer numa autoridade universal sobre português europeu;
+- não pode exigir acesso a fontes privadas em runtime.
 
-### 3. Generic language knowledge — externo
-
-A autoridade é `Blackspirits/ptpt-language-intelligence`.
-
-Inclui:
-
-- naturalidade genérica pt-PT;
-- contraste pt-PT/pt-BR;
-- léxico e preferências semânticas;
-- sintaxe, regência e colocação pronominal;
-- translationese;
-- evidência e confiança.
-
-Enquanto não existe snapshot consumível, `vocabulary-map.json` e regras linguísticas locais são fallback compatível com a release. Devem migrar progressivamente para consumo versionado, sem copiar a source of truth de volta para o Humanizer.
+A manutenção pode investigar e validar claims noutros ambientes. Só conteúdo revisto, selecionado e explicitamente publicado passa a fazer parte desta camada.
 
 ### 4. Contracts
 
-`contracts/` descreve as interfaces de eval/output.
-
-Isto permite que runners, agentes e integrações validem estruturas sem depender de detalhes internos do Python.
+`contracts/` descreve interfaces de output/eval para permitir validação sem depender de detalhes internos do tooling.
 
 ### 5. Evals
 
-`evals/` mede comportamento observável do produto:
+`evals/` mede comportamento observável: preservação, falsos positivos, seleção de modo, AUDITAR, regressões contextuais e constraints verificáveis.
 
-- preservação;
-- falsos positivos;
-- escolha de modo;
-- padrões AUDITAR;
-- regressões contextuais;
-- constraints verificáveis.
-
-Evals não são a autoridade linguística. São testes do comportamento do consumidor.
+Evals provam comportamento da release dentro da cobertura existente; não demonstram correção linguística universal.
 
 ### 6. Support tooling
 
-Python em `scripts/`, `evals/` e `humanizer_support/` existe para:
+Python em `scripts/`, `evals/` e `humanizer_support/` serve para validar o pacote, pontuar evals, verificar contratos e criar releases determinísticas. Não é um motor linguístico separado.
 
-- validar o pacote;
-- pontuar evals;
-- verificar contracts;
-- construir releases determinísticas.
+## Distribuição
 
-Não deve tornar-se um segundo “motor linguístico” com listas privadas de regras.
+O repositório público é downstream de distribuição e deve continuar instalável diretamente.
+
+```text
+investigação / desenvolvimento
+          ↓ revisão + testes
+conteúdo aprovado para release
+          ↓ publicação por allowlist
+Blackspirits/humanizer-pt-pt (público)
+          ↓
+instalação pelos utilizadores
+```
+
+A publicação deve preservar versão, changelog, testes e proveniência suficiente da release, sem copiar corpus privado, segredos, fixtures sensíveis ou material experimental.
+
+Ver `docs/DISTRIBUTION.md`.
 
 ## Evolução
 
-A evolução segura deve seguir:
-
-```text
-evidência linguística
-      ↓
-PT-PT Language Intelligence
-      ↓ snapshot versionado
-Humanizer consumer adapter
-      ↓
-behavior/eval impact
-      ↓
-release Humanizer
-```
-
-Mudanças puramente de comportamento podem evoluir diretamente no Humanizer, desde que sejam cobertas por evals.
+Mudanças de comportamento exigem evals/regressões. Mudanças linguísticas aplicadas devem ser justificadas por evidência e testadas contra falsos positivos antes de entrar na release pública.
 
 ## Relação com blader/humanizer
 
-`blader/humanizer` foi uma inspiração inicial para padrões de escrita artificial e formato de skill.
+`blader/humanizer` foi uma inspiração inicial para padrões de escrita artificial e formato de skill. Não é upstream arquitetural obrigatório.
 
-Não é upstream arquitetural obrigatório.
-
-A partir da linha 1.x, este repo evolui segundo:
-
-- necessidades reais de pt-PT;
-- conhecimento validado do PT-PT Language Intelligence;
-- evals próprios;
-- regressões próprias;
-- requisitos dos runtimes de skills suportados.
-
-Portanto, melhorias futuras não devem ser avaliadas pela proximidade ao Humanizer inglês, mas pela qualidade e segurança do comportamento pt-PT.
+A linha 1.x evolui segundo necessidades reais de pt-PT, evals/regressões próprios e requisitos dos runtimes suportados.

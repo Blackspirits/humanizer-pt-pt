@@ -14,21 +14,13 @@
 - `docs/ARCHITECTURE.md`: fronteira entre runtime, comportamento, conhecimento e tooling.
 
 
-## Autoridade linguística externa
+## Autonomia da distribuição
 
-Este repositório é um **consumidor/aplicação editorial**, não a autoridade BlackSpirits para conhecimento linguístico genérico pt-PT.
+Este repositório define a release pública do Humanizer e deve permanecer autocontido. Nenhum agente pode exigir acesso a repositórios, corpus ou serviços privados para executar, validar ou empacotar a skill.
 
-A autoridade canónica é:
+Modos, política de saída, proteção da voz, critérios de intervenção, UX, evals e comportamento publicado pertencem ao Humanizer. Afirmações linguísticas incluídas na release são conhecimento aplicado e contextual: não devem ser promovidas automaticamente a regras universais da língua.
 
-`Blackspirits/ptpt-language-intelligence`
-
-Regra:
-
-`Language Intelligence owns generic language truth; humanizer owns humanization behavior.`
-
-Enquanto não existir um snapshot versionado aplicável do PT-PT Language Intelligence, as regras e mapas deste repositório continuam a definir o comportamento da versão publicada da skill. No entanto, novas claims linguísticas genéricas devem ser validadas e, quando apropriado, promovidas no Language Intelligence em vez de criarem uma segunda fonte de verdade aqui.
-
-Preferências específicas do Humanizer, modos, política de saída, proteção da voz, critérios de intervenção e UX da skill permanecem neste repositório.
+A manutenção pode validar conhecimento em fontes upstream privadas, mas apenas artefactos explicitamente importados, versionados e testados neste repositório fazem parte da release pública.
 
 ## Regras de manutenção
 

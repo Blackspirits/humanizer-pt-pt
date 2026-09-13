@@ -1,5 +1,11 @@
 # Contribuir
 
+## Modelo de contribuição
+
+Este é o repositório público de distribuição. Issues e pull requests são bem-vindos como propostas, correções e evidência, mas uma alteração aceite pode ser reproduzida e validada no upstream de desenvolvimento antes de voltar a ser publicada aqui.
+
+A release pública deve permanecer autocontida e nunca depender de repositórios ou serviços privados. Consulta `docs/DISTRIBUTION.md`.
+
 ## Antes de propor uma alteração
 
 1. Confirma que o problema é específico ou relevante para pt-PT.

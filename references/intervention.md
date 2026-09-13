@@ -1,6 +1,6 @@
 # Política de intervenção e precedência
 
-Este ficheiro define **como o Humanizer decide se deve alterar texto e até que ponto**. Não define verdade linguística genérica; essa autoridade pertence ao PT-PT Language Intelligence.
+Este ficheiro define **como o Humanizer decide se deve alterar texto e até que ponto**. Conhecimento linguístico pt-PT aqui incluído é aplicado à release e não constitui, por si só, verdade linguística universal.
 
 ## Regra central
 
