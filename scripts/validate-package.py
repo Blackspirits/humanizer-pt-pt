@@ -285,8 +285,8 @@ def _list_of_strings(case: dict[str, Any], field: str, case_id: str) -> None:
 def validate_evals(valid_pattern_ids: set[int]) -> None:
     data = load_json("evals/cases.json")
     cases = data.get("cases")
-    if not isinstance(cases, list) or len(cases) < 60:
-        fail("evals/cases.json deve conter pelo menos 60 casos")
+    if not isinstance(cases, list) or len(cases) < 70:
+        fail("evals/cases.json deve conter pelo menos 70 casos")
     ids: list[str] = []
     modes: set[str] = set()
     audit_count = 0
@@ -310,6 +310,7 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
             "must_preserve_exact",
             "manual_checks",
             "semantic_anchor_exceptions",
+            "voice_traits_to_preserve",
         ):
             _list_of_strings(case, field, case_id)
         preserve_anchors = case.get("preserve_semantic_anchors")
@@ -332,8 +333,17 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
             for group in groups
         ):
             fail(f"must_include_one_of inválido no caso {case_id}")
-        if mode == "CLONAR VOZ" and not isinstance(case.get("voice_sample"), str):
-            fail(f"caso {case_id} de CLONAR VOZ sem voice_sample")
+        if mode == "CLONAR VOZ":
+            if not isinstance(case.get("voice_sample"), str):
+                fail(f"caso {case_id} de CLONAR VOZ sem voice_sample")
+            traits = case.get("voice_traits_to_preserve", [])
+            if not isinstance(traits, list) or not traits or not all(
+                isinstance(item, str) and item for item in traits
+            ):
+                fail(
+                    f"caso {case_id} de CLONAR VOZ sem "
+                    "voice_traits_to_preserve"
+                )
         if mode == "AUTO" and case.get("expected_mode_selection") not in {"HUMANIZAR", "QA HUMANO"}:
             fail(f"caso AUTO {case_id} sem expected_mode_selection válido")
         if mode == "AUDITAR":
@@ -385,6 +395,16 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
         "negative-literary-001",
         "negative-orality-001",
         "negative-humour-001",
+        "voice-dry-001",
+        "voice-parenthetical-001",
+        "voice-technical-terse-001",
+        "format-ui-clean-002",
+        "format-email-natural-001",
+        "format-academic-hedging-001",
+        "format-editorial-opinion-001",
+        "format-fiction-dialogue-001",
+        "format-changelog-001",
+        "format-subtitles-001",
     }
     missing_context_cases = required_context_cases.difference(ids)
     if missing_context_cases:
@@ -399,6 +419,16 @@ def validate_evals(valid_pattern_ids: set[int]) -> None:
         fail("devem existir pelo menos cinco avaliações com preservação de âncoras semânticas")
     if len(overediting_cases) < 10:
         fail("devem existir pelo menos dez avaliações de over-editing")
+    declared_formats = {
+        case.get("text_format")
+        for case in cases
+        if isinstance(case.get("text_format"), str)
+    }
+    if len(declared_formats) < 8:
+        fail("os evals devem cobrir pelo menos oito formatos declarados")
+    clone_voice_count = sum(1 for case in cases if case.get("mode") == "CLONAR VOZ")
+    if clone_voice_count < 4:
+        fail("devem existir pelo menos quatro avaliações CLONAR VOZ")
     if audit_count < 4:
         fail("devem existir pelo menos quatro avaliações AUDITAR")
     expected_audit_severities = {"limpo", "ligeiro", "moderado", "pesado"}
