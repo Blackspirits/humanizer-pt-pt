@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blackspirits.dev/humanizer-pt-pt/contracts/rewrite-response.schema.json",
+  "title": "Humanizer pt-PT rewrite response",
+  "oneOf": [
+    {
+      "type": "string"
+    },
+    {
+      "type": "object",
+      "required": [
+        "output"
+      ],
+      "properties": {
+        "output": {
+          "type": "string"
+        },
+        "selected_mode": {
+          "enum": [
+            "HUMANIZAR",
+            "QA HUMANO",
+            "CLONAR VOZ"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}
